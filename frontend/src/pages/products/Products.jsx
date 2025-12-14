@@ -72,26 +72,26 @@ const Products = () => {
   ];
 
   return (
-    <div className="Playfair Display min-h-screen bg-gradient-to-b from-gray-900 via-slate-900 to-black text-white selection:bg-red-500/30">
+    <div className="Playfair Display min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white selection:bg-red-500/30">
       {/* 🌟 Hero Section */}
       <section className="relative py-32 px-6 md:px-20 text-center overflow-hidden">
         {/* Background Accents */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-red-600/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-blue-600/10 rounded-full blur-[100px]" />
+          <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-red-600/5 dark:bg-red-600/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-blue-600/5 dark:bg-blue-600/10 rounded-full blur-[100px]" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto space-y-6">
           <span className="text-red-500 font-bold tracking-[0.2em] text-sm uppercase animate-fade-in-up">
             Our Collection
           </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight drop-shadow-2xl">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white leading-tight drop-shadow-2xl">
             Ethiopia's Finest <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
               Green Coffee
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
             Sourced exclusively from the renowned high-altitude regions of
             Ethiopia. Each bean tells a story of heritage, soil, and sunlight.
           </p>
@@ -109,8 +109,8 @@ const Products = () => {
           >
             {/* Image Half */}
             <div className="w-full lg:w-1/2 relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 group-hover:shadow-[0_20px_50px_rgba(220,38,38,0.15)] h-[400px] lg:h-[600px] border border-white/5">
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 group-hover:shadow-[0_20px_50px_rgba(220,38,38,0.15)] h-[400px] lg:h-[600px] border border-gray-300 dark:border-white/5">
+                <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
                 <img
                   src={product.image}
                   alt={product.region}
@@ -118,13 +118,13 @@ const Products = () => {
                 />
 
                 {/* Floating Badge */}
-                <div className="absolute bottom-6 left-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-2xl flex items-center gap-3">
+                <div className="absolute bottom-6 left-6 z-20 bg-white/80 dark:bg-white/10 backdrop-blur-md border border-gray-300 dark:border-white/20 px-6 py-3 rounded-2xl flex items-center gap-3">
                   <Award className="text-red-500 w-8 h-8" />
                   <div>
-                    <p className="text-xs text-gray-300 uppercase tracking-wider">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                       SCA Score
                     </p>
-                    <p className="text-xl font-bold text-white">
+                    <p className="text-xl font-bold text-gray-900 dark:text-white">
                       {product.score}
                     </p>
                   </div>
@@ -146,41 +146,41 @@ const Products = () => {
                   <span className="px-4 py-1 rounded-full bg-red-600/20 text-red-500 text-xs font-bold uppercase tracking-widest border border-red-500/20">
                     {product.tag}
                   </span>
-                  <span className="text-gray-400 text-sm font-medium tracking-wide">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm font-medium tracking-wide">
                     {product.type}
                   </span>
                 </div>
 
-                <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
                   {product.region}
                 </h2>
               </div>
 
               <div className="w-20 h-1 bg-gradient-to-r from-red-600 to-transparent rounded-full" />
 
-              <p className="text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                 {product.description}
               </p>
 
               {/* Specs Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                <div className="p-4 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-white/5 hover:border-gray-400 dark:hover:border-white/10 transition-colors">
                   <div className="flex items-center gap-3 mb-2">
                     <Mountain className="text-orange-400 w-5 h-5" />
-                    <h4 className="text-sm font-bold text-gray-200">
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-gray-200">
                       Elevation
                     </h4>
                   </div>
-                  <p className="text-gray-400 text-sm">{product.elevation}</p>
+                  <p className="text-gray-700 dark:text-gray-400 text-sm">{product.elevation}</p>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                <div className="p-4 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-white/5 hover:border-gray-400 dark:hover:border-white/10 transition-colors">
                   <div className="flex items-center gap-3 mb-2">
                     <Droplets className="text-blue-400 w-5 h-5" />
-                    <h4 className="text-sm font-bold text-gray-200">
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-gray-200">
                       Key Notes
                     </h4>
                   </div>
-                  <p className="text-gray-400 text-sm">{product.profile}</p>
+                  <p className="text-gray-700 dark:text-gray-400 text-sm">{product.profile}</p>
                 </div>
               </div>
 
@@ -197,12 +197,12 @@ const Products = () => {
 
       {/* 🚀 Final CTA Section */}
       <section className="py-32 px-6 text-center relative overflow-hidden mt-20">
-        <div className="absolute inset-0 bg-red-900/5 -skew-y-3 transform origin-bottom-right" />
+        <div className="absolute inset-0 bg-red-900/5 dark:bg-red-900/5 bg-red-500/5 -skew-y-3 transform origin-bottom-right" />
         <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-white">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
             Ready to Experience the Origin?
           </h2>
-          <p className="text-xl text-gray-400">
+          <p className="text-xl text-gray-700 dark:text-gray-400">
             Contact our sourcing team for current harvest availability, sample
             requests, and shipping logistics.
           </p>

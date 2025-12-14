@@ -23,37 +23,46 @@ const MainServices = () => {
   return (
     <div
       id="services"
-      className="relative w-full py-20 px-[5%] sm:px-[10%] lg:px-[12%] scroll-mt-20 overflow-hidden bg-gray-900"
+      className="relative w-full py-20 pt-32 px-[5%] sm:px-[10%] lg:px-[12%] scroll-mt-20 overflow-hidden bg-white dark:bg-gray-900"
     >
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 dark:bg-none"
         style={{
+          backgroundImage: `
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(255, 255, 255, 0.95) 70%, rgb(255, 255, 255) 100%), 
+            url('${BACKGROUND_IMAGE_URL}')
+          `,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="hidden dark:block absolute inset-0" style={{
           backgroundImage: `
             linear-gradient(to bottom, rgba(17, 24, 39, 0.7) 0%, rgba(17, 24, 39, 0.7) 40%, rgba(17, 24, 39, 0.9) 70%, rgb(17, 24, 39) 100%), 
             url('${BACKGROUND_IMAGE_URL}')
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
-        }}
-      ></div>
+        }}></div>
+      </div>
 
       <div className="relative z-10">
         <h4
-          className="text-center mb-2 text-xl font-medium text-yellow-400 font-[--font-Ovo]"
+          className="text-center mb-2 text-xl font-medium text-yellow-600 dark:text-yellow-400 font-[--font-Ovo]"
           data-animation="slide-up"
         >
           From Origin to Export
         </h4>
 
         <h2
-          className="text-center text-5xl md:text-6xl font-extrabold text-white font-[--font-Ovo]"
+          className="text-center text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white font-[--font-Ovo]"
           data-animation="slide-up"
         >
           Our Coffee Export Services
         </h2>
 
         <p
-          className="text-center max-w-3xl mx-auto mt-5 mb-16 text-lg text-gray-200 font-[--font-Ovo]"
+          className="text-center max-w-3xl mx-auto mt-5 mb-16 text-lg text-gray-700 dark:text-gray-200 font-[--font-Ovo]"
           data-animation="fade-in"
         >
           As an Ethiopian-based company, we specialize in exporting premium,

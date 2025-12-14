@@ -7,10 +7,10 @@ export default function LatestBlog() {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
                 <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                         Latest Ethiopian Coffee Blog
                     </h2>
-                    <p className="mt-2 text-lg leading-8 text-gray-400">
+                    <p className="mt-2 text-lg leading-8 text-gray-700 dark:text-gray-400 font-semibold dark:font-normal">
                         Discover Ethiopia’s rich coffee heritage, from unique regional flavors
                         to traditional processing methods that shape its world-renowned taste
                     </p>
@@ -23,7 +23,7 @@ export default function LatestBlog() {
                         <article
                             key={post.id}
                             className="relative isolate flex flex-col justify-end rounded-2xl 
-                         overflow-hidden bg-white/5 border border-white/10 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 group hover:border-red-500/50 transition-colors"
+                         overflow-hidden bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 group hover:border-red-500/50 transition-colors"
                         >
                             <img
                                 src={post.imgSrc}
@@ -33,48 +33,48 @@ export default function LatestBlog() {
                             />
 
                             <div className="absolute inset-0 -z-10 bg-gradient-to-t 
-                              from-gray-900 via-gray-900/40" />
+                              from-white via-white/60 dark:from-gray-900 dark:via-gray-900/40" />
 
-                            <div className="flex flex-wrap items-center text-sm text-gray-300">
-                                <time dateTime={post.date} className="mr-8">
+                            <div className="flex flex-wrap items-center text-sm text-gray-800 dark:text-gray-300">
+                                <time dateTime={post.date} className="mr-8 font-semibold dark:font-normal">
                                     {post.date}
                                 </time>
 
                                 {post.category && (
                                     <a
                                         href={post.category.href}
-                                        className="rounded-full bg-white/10 px-3 py-1.5 text-gray-300 
-                                font-medium hover:bg-white/20"
+                                        className="rounded-full bg-gray-200 dark:bg-white/10 px-3 py-1.5 text-gray-900 dark:text-gray-300 
+                                font-medium hover:bg-gray-300 dark:hover:bg-white/20"
                                     >
                                         {post.category.title}
                                     </a>
                                 )}
                             </div>
 
-                            <h3 className="mt-4 text-lg font-semibold text-white">
+                            <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
                                 <a href={post.href}>
                                     <span className="absolute inset-0" />
                                     {post.title}
                                 </a>
                             </h3>
 
-                            <p className="mt-2 text-sm text-gray-400">{post.description}</p>
+                            <p className="mt-2 text-sm text-gray-700 dark:text-gray-400 font-medium dark:font-normal">{post.description}</p>
 
                             {post.author && (
-                                <div className="flex items-center gap-x-4 border-t border-gray-100/10 pt-4 mt-6">
+                                <div className="flex items-center gap-x-4 border-t border-gray-300 dark:border-gray-100/10 pt-4 mt-6">
                                     <img
                                         src={post.author.imageUrl}
                                         alt=""
-                                        className="h-10 w-10 rounded-full bg-white/10"
+                                        className="h-10 w-10 rounded-full bg-gray-200 dark:bg-white/10"
                                     />
                                     <div className="text-sm leading-6">
-                                        <p className="font-semibold text-white">
+                                        <p className="font-semibold text-gray-900 dark:text-white">
                                             <a href={post.author.href}>
                                                 <span className="absolute inset-0" />
                                                 {post.author.name}
                                             </a>
                                         </p>
-                                        <p className="text-gray-300">{post.author.role}</p>
+                                        <p className="text-gray-700 dark:text-gray-300 font-medium dark:font-normal">{post.author.role}</p>
                                     </div>
                                 </div>
                             )}

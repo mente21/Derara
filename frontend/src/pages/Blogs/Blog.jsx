@@ -4,7 +4,7 @@ import BlogCards from "../../components/blog/BlogCards";
 
 export default function Blog() {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 via-slate-900 to-black text-white">
+        <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white">
             <LatestBlog />
             <BlogCards />
         </div>

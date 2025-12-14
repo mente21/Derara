@@ -22,10 +22,10 @@ const BlogCards = () => {
 
             {/* Title */}
             <div className="text-center mb-12">
-                <h1 className="text-3xl font-bold text-white">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                     This Week Hot Blogs
                 </h1>
-                <p className="mt-2 text-gray-400">
+                <p className="mt-2 text-gray-700 dark:text-gray-400 font-semibold dark:font-normal">
                     Stay updated with trending insights, fresh stories, and top Ethiopian coffee highlights.
                 </p>
             </div>
@@ -47,11 +47,11 @@ const BlogCards = () => {
                             </div>
 
                             <div className="grow">
-                                <h3 className="text-xl font-semibold text-white group-hover:text-red-400 transition-colors">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors">
                                     {post.title}
                                 </h3>
 
-                                <p className="mt-3 text-gray-400">
+                                <p className="mt-3 text-gray-700 dark:text-gray-400 font-medium dark:font-normal">
                                     {post.description}
                                 </p>
 

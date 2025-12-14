@@ -16,7 +16,7 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 shadow-inner">
+      <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 bg-gray-100 dark:bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-300 dark:border-white/10 shadow-inner">
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path;
           return (
@@ -26,7 +26,7 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
               className={`relative px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-all duration-300 rounded-full ${
                 isActive
                   ? "text-white bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
-                  : "text-white hover:bg-white/10"
+                  : "text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/10"
               }`}
             >
               {link.name}

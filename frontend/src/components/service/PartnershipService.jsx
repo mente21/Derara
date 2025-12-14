@@ -43,18 +43,18 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
     const tabContent = service.details[activeTab];
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white relative py-20">
+        <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white relative py-20">
             {/* Background Texture/Overlay for visual depth */}
-            <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: 'url(https://www.transparenttextures.com/patterns/black-linen.png)' }}></div>
+            <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10" style={{ backgroundImage: 'url(https://www.transparenttextures.com/patterns/black-linen.png)' }}></div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Section Header & Tagline */}
                 <header className="text-center mb-16">
-                    <h1 className="text-6xl md:text-7xl font-extrabold text-yellow-500 font-[--font-Ovo] drop-shadow-md tracking-tight">
+                    <h1 className="text-6xl md:text-7xl font-extrabold text-yellow-600 dark:text-yellow-500 font-[--font-Ovo] drop-shadow-md tracking-tight">
                         {service.title}
                     </h1>
-                    <p className="mt-4 text-2xl text-gray-300 max-w-4xl mx-auto">
+                    <p className="mt-4 text-2xl text-gray-700 dark:text-gray-300 font-semibold dark:font-normal max-w-4xl mx-auto">
                         {service.tagline}
                     </p>
                 </header>
@@ -64,15 +64,15 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
 
                     {/* Left: Overview Text */}
                     <div className="lg:w-1/2 space-y-6">
-                        <h3 className="text-4xl font-bold text-gray-100 border-l-4 border-yellow-600 pl-4">
+                        <h3 className="text-4xl font-bold text-gray-900 dark:text-gray-100 border-l-4 border-yellow-600 pl-4">
                             Your Success is Our Goal
                         </h3>
-                        <p className="text-lg leading-relaxed text-gray-300">
+                        <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 font-medium dark:font-normal">
                             {service.overview}
                         </p>
 
                         {/* Call to Action Button */}
-                        <button className="mt-8 px-8 py-3 bg-yellow-600 text-gray-900 font-bold rounded-lg shadow-xl hover:bg-yellow-500 transition duration-300 transform hover:scale-105">
+                        <button className="mt-8 px-8 py-3 bg-yellow-600 text-white dark:text-gray-900 font-bold rounded-lg shadow-xl hover:bg-yellow-500 transition duration-300 transform hover:scale-105">
                             Apply for a Wholesale Account &rarr;
                         </button>
                     </div>
@@ -88,8 +88,8 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
                 </div>
 
                 {/* --- 2. Features Grid --- */}
-                <div className="bg-gray-800 p-10 rounded-2xl shadow-inner shadow-gray-700/50 mb-20">
-                    <h3 className="text-3xl font-bold mb-8 text-center text-yellow-400">
+                <div className="bg-gray-100 dark:bg-gray-800 p-10 rounded-2xl shadow-inner shadow-gray-300/50 dark:shadow-gray-700/50 mb-20">
+                    <h3 className="text-3xl font-bold mb-8 text-center text-yellow-600 dark:text-yellow-400">
                         Dedicated Partner Services
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -97,8 +97,8 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
                             <div key={index} className="flex items-start space-x-4">
                                 <FeatureIcon letter={feature.icon} />
                                 <div>
-                                    <h4 className="text-xl font-semibold text-white">{feature.name}</h4>
-                                    <p className="text-sm text-gray-400 mt-1">{feature.description}</p>
+                                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white">{feature.name}</h4>
+                                    <p className="text-sm text-gray-700 dark:text-gray-400 mt-1">{feature.description}</p>
                                 </div>
                             </div>
                         ))}
@@ -106,10 +106,10 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
                 </div>
 
                 {/* --- 3. Tabbed Details Section --- */}
-                <div className="bg-gray-800 p-8 rounded-2xl shadow-2xl border border-yellow-700/50">
+                <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-yellow-600/30 dark:border-yellow-700/50">
 
                     {/* Tab Navigation */}
-                    <div className="flex border-b border-gray-700 mb-6">
+                    <div className="flex border-b border-gray-300 dark:border-gray-700 mb-6">
                         {Object.keys(service.details).map((key) => (
                             <button
                                 key={key}
@@ -117,8 +117,8 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
                                 className={`
                                     px-6 py-3 text-lg font-medium transition-colors duration-300 
                                     ${activeTab === key
-                                        ? 'border-b-4 border-yellow-500 text-yellow-500 bg-gray-800'
-                                        : 'text-gray-400 hover:text-yellow-600 hover:bg-gray-700/50'
+                                        ? 'border-b-4 border-yellow-600 dark:border-yellow-500 text-yellow-600 dark:text-yellow-500 bg-white dark:bg-gray-800'
+                                        : 'text-gray-600 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-600 hover:bg-gray-200 dark:hover:bg-gray-700/50'
                                     }
                                 `}
                             >
@@ -129,12 +129,12 @@ const PartnershipServiceDetailSection = ({ service = partnershipService }) => {
 
                     {/* Tab Content */}
                     <div className="p-4 space-y-6">
-                        <p className="text-lg leading-relaxed text-gray-300">
+                        <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 font-medium dark:font-normal">
                             {tabContent.content}
                         </p>
 
                         {/* Tab-Specific Call to Action */}
-                        <button className="inline-flex items-center px-6 py-2 border border-yellow-600 text-yellow-600 font-semibold rounded-full hover:bg-yellow-600 hover:text-gray-900 transition duration-300">
+                        <button className="inline-flex items-center px-6 py-2 border border-yellow-600 text-yellow-600 font-semibold rounded-full hover:bg-yellow-600 hover:text-white dark:hover:text-gray-900 transition duration-300">
                             {tabContent.cta}
                             <svg className="ml-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z" /></svg>
                         </button>
