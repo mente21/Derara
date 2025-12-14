@@ -1,4 +1,6 @@
 import React from "react";
+import logoImage from "../../assets/logo.png";
+import "../../styles/loader.css";
 
 /**
  * ProfessionalLoader Component
@@ -30,10 +32,11 @@ const ProfessionalLoader = ({
 
   const loaderContent = (
     <div className={`${centered && !fullScreen ? "flex flex-col items-center justify-center" : ""} ${className}`}>
+      
       {/* Logo with smooth fade and scale animation */}
       <div className="relative flex flex-col items-center justify-center animate-fade-scale">
         <img
-          src="/Derara/logo.png"
+          src={logoImage}
           alt="Loading..."
           className={`${sizeClass} object-contain`}
         />
@@ -45,24 +48,6 @@ const ProfessionalLoader = ({
           </p>
         )}
       </div>
-      
-      {/* Custom animations - Mente style */}
-      <style jsx>{`
-        @keyframes fadeScale {
-          0%, 100% {
-            opacity: 0.6;
-            transform: scale(0.95);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        
-        .animate-fade-scale {
-          animation: fadeScale 1.5s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 
