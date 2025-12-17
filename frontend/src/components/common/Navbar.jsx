@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -12,6 +13,7 @@ const navLinks = [
 
 const Navbar = ({ mobileOpen, setMobileOpen }) => {
   const location = useLocation();
+  const { isDarkMode } = useTheme();
 
   return (
     <>
@@ -35,68 +37,74 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
         })}
       </nav>
 
-      {/* Mobile Navbar Overlay */}
+      {/* Mobile Navbar Overlay - Reconstructed */}
       <div
-        className={`lg:hidden fixed inset-0 z-40 flex justify-end transition-opacity duration-300 ${
-          mobileOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+        className={`lg:hidden fixed inset-0 z-50 transition-opacity duration-300 ${
+          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
         {/* Backdrop */}
-        <div
+        <div 
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={() => setMobileOpen(false)}
         />
 
-        {/* Drawer */}
+        {/* Drawer Content */}
         <div
-          className={`relative w-[50%] max-w-sm h-full bg-white border-l border-gray-200 shadow-2xl flex flex-col pt-24 pb-10 px-8 transition-transform duration-500 ease-out ${
+          className={`absolute right-0 top-0 h-screen w-[280px] shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${
             mobileOpen ? "translate-x-0" : "translate-x-full"
           }`}
+          style={{ backgroundColor: isDarkMode ? '#111827' : '#ffffff' }}
         >
-          {/* Decorative shapes */}
-          <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-red-600/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-600/20 rounded-full blur-3xl"></div>
-
-          {/* Links */}
-          <div className="flex flex-col space-y-4">
-            {navLinks
-              .filter((link) => link.name === "Home")
-              .map((link, index) => {
-                const isActive = location.pathname === link.path;
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    onClick={() => setMobileOpen(false)}
-                    style={{ transitionDelay: `${index * 50}ms` }}
-                    className={`group flex items-center justify-between text-lg font-bold uppercase tracking-wider border-b pb-3 transition-all duration-300 ${
-                      mobileOpen
-                        ? "translate-x-0 opacity-100"
-                        : "translate-x-10 opacity-0"
-                    } ${
-                      isActive
-                        ? "text-red-600 border-red-500/50"
-                        : "text-gray-700 hover:text-black hover:border-gray-400"
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    <span
-                      className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                        isActive
-                          ? "bg-red-600 shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                          : "bg-transparent group-hover:bg-red-500"
-                      }`}
-                    />
-                  </Link>
-                );
-              })}
+          {/* Header */}
+          <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+            <span className="text-xl font-bold text-gray-900 dark:text-white tracking-widest">
+              MENU
+            </span>
+            <button 
+              onClick={() => setMobileOpen(false)}
+              className="text-gray-500 hover:text-red-600 transition-colors"
+            >
+              {/* Close Icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
-          {/* Footer */}
-          <div className="mt-auto">
-            <p className="text-gray-400 text-xs text-center uppercase tracking-widest">
+          {/* Links List */}
+          <div className="flex-1 overflow-y-auto py-4 px-6 space-y-3">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-lg transition-all duration-200 border-l-4 ${
+                    isActive
+                      ? "bg-red-50 text-red-600 border-red-600 shadow-sm"
+                      : "bg-gray-50 text-gray-700 border-transparent hover:bg-gray-100 hover:text-gray-900"
+                  }`}
+                  style={{
+                    backgroundColor: isActive 
+                      ? (isDarkMode ? 'rgba(220, 38, 38, 0.1)' : '#fef2f2')
+                      : (isDarkMode ? 'rgba(255, 255, 255, 0.05)' : '#f9fafb'),
+                    color: isActive 
+                      ? '#dc2626' 
+                      : (isDarkMode ? '#e5e7eb' : '#374151'),
+                    borderColor: isActive ? '#dc2626' : 'transparent'
+                  }}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Mobile Footer Area */}
+          <div className="p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-black/20 mt-auto">
+            <p className="text-xs text-center text-gray-400 uppercase tracking-widest font-medium">
               Derara © {new Date().getFullYear()}
             </p>
           </div>
