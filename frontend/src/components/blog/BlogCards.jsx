@@ -47,12 +47,12 @@ const BlogCards = () => {
                             </div>
 
                             <div className="grow">
-                                <h3 className="text-xl font-bold text-[#2D1B13] group-hover:text-gray-600 transition-colors">
-                                    {post.title}
+                                <h3 className="text-lg font-bold text-[#2D1B13] group-hover:text-gray-600 transition-colors">
+                                    {post.smallTitle || post.title}
                                 </h3>
 
                                 <p className="mt-3 text-base text-gray-700 font-medium leading-relaxed border-l-2 border-black pl-3">
-                                    {post.description}
+                                    {post.smallDescription || post.description}
                                 </p>
 
                                 <p className="mt-4 inline-flex items-center gap-x-1 text-sm text-[#D62828] font-bold uppercase tracking-wider group-hover:text-black transition-colors">

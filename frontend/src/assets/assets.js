@@ -66,6 +66,9 @@ export const blogPosts = [
         title: "Exploring Yirgacheffe: The Floral King",
         description:
             "Known for its complex floral notes and bright acidity—Ethiopia’s washed coffee classic.",
+        smallTitle: "Yirgacheffe Seminar: National & Export Market",
+        smallDescription:
+            "A seminar on empowering Yirgacheffe farmers with insights into national regulations and global export opportunities.",
         date: "Dec 05, 2025",
         category: { title: "Origin Focus", href: "#" },
         author: {
