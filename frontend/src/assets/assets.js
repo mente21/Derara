@@ -1,4 +1,9 @@
 // assets.js
+import communityTrainingImg from './community-training.jpg';
+import sidamaFarmersImg from './sidama-farmers.jpg';
+import hararMarketImg from './harar-market.jpg';
+import onsiteCoffeeImg from './onsite-coffee.jpg';
+import okrGuideImg from './okr-guide.jpg';
 
 // -------------------------------------------------------------
 // 1. STATIC ASSETS (Icons / Images)
@@ -56,6 +61,7 @@ export const blogPosts = [
         href: "#",
         imgSrc:
             "https://i.pinimg.com/736x/b4/b7/0c/b4b70c60ad33e944b08285f299e6e814.jpg",
+        smallImgSrc: communityTrainingImg,
         imgAlt: "Coffee beans related to Yirgacheffe",
         title: "Exploring Yirgacheffe: The Floral King",
         description:
@@ -76,6 +82,7 @@ export const blogPosts = [
         href: "#",
         imgSrc:
             "https://i.pinimg.com/1200x/8b/4b/ce/8b4bced6cb4a1c1b28a237c63ce85c87.jpg",
+        smallImgSrc: sidamaFarmersImg,
         imgAlt: "Roasted coffee beans related to Sidama",
         title: "Sidama: Chocolate & Citrus Balance",
         description:
@@ -96,6 +103,7 @@ export const blogPosts = [
         href: "#",
         imgSrc:
             "https://i.pinimg.com/originals/a6/ac/3e/a6ac3e8d58658376a202e6bbf6571e61.png",
+        smallImgSrc: hararMarketImg,
         imgAlt: "Coffee cup related to Harar",
         title: "Harar: The Natural, Winey Wildness",
         description:
@@ -129,6 +137,7 @@ export const blogPosts = [
         href: "#",
         imgSrc:
             "https://i.pinimg.com/736x/6a/7b/9a/6a7b9a09d97a0e0a5a6496ae7ee378a3.jpg",
+        smallImgSrc: onsiteCoffeeImg,
         imgAlt: "Onsite",
         title: "Onsite",
         description:
@@ -140,6 +149,7 @@ export const blogPosts = [
         href: "#",
         imgSrc:
             "https://i.pinimg.com/1200x/42/e5/50/42e550517036057a9c3d173682932001.jpg",
+        smallImgSrc: okrGuideImg,
         imgAlt: "Guide to OKRs",
         title: "The Complete Guide to OKRs",
         description:
