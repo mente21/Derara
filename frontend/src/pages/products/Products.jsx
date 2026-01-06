@@ -1,85 +1,186 @@
-import React from "react";
-import { Mountain, Droplets, Award, ArrowRight } from "lucide-react";
-import yirgacheffeImage from "../../assets/yirgacheffe.jpg";
+import React, { useState, useEffect } from "react";
+import {
+  Mountain,
+  Droplets,
+  Award,
+  ArrowRight,
+  X,
+  Mail,
+  ChevronLeft,
+  Send,
+  CheckCircle,
+} from "lucide-react";
+import yirgachafenatural from "../../assets/yirgachafenatural.png";
+import yirgachafeWashed from "../../assets/yirgachafeWashed.png";
+import sidamaWashed from "../../assets/sidamaWashed.png";
 import sidamaImage from "../../assets/sidamma.jpg";
-import limuImage from "../../assets/limu.jpg";
+import limuWashed from "../../assets/limuWashed.png";
 import gujiImage from "../../assets/guji.jpg";
+import gujiNatural from "../../assets/gujiNatural.png";
 import harrarImage from "../../assets/harrar.jpg";
 import { Link } from "react-router-dom";
 
 const Products = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [formStatus, setFormStatus] = useState("idle"); // idle, submitting, success
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!selectedProduct) {
+      setShowForm(false);
+      setFormStatus("idle");
+    }
+  }, [selectedProduct]);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setFormStatus("submitting");
+    // Simulate network request
+    setTimeout(() => {
+      setFormStatus("success");
+    }, 1500);
+  };
+
   const coffeeProducts = [
+    // --- Yirgacheffe ---
     {
       id: 1,
       region: "Yirgacheffe",
       type: "Washed Process",
-      description:
-        "Known as the crown jewel of Ethiopian coffee, Yirgacheffe beans are celebrated globally for their distinctive floral boquet and complex flavor profile. Grown in the high altitudes of the Gedeo Zone, these beans undergo a rigorous wet processing method that enhances their tea-like body and lemony brightness. Perfect for those who appreciate clarity and elegance in their cup.",
-      profile: "Jasmine, Honeysuckle, Bergamot, Lemon Zest",
+      short_desc:
+        "Renowned for its tea-like delicacy and pristine cup profile. Expect jasmine aromas leading into vibrant lemony acidity.",
+      long_desc:
+        "Sourced from the high peaks of Gedeo, this Yirgacheffe represents the pinnacle of washed Ethiopian coffee. Carefully fermented to reveal a stunningly clean character, it offers layers of citrus zest, bergamot, and fresh jasmine flowers. The body is light and tea-like, making it an incredibly refreshing brew.",
+      profile: "Jasmine, Lemon, Bergamot, Tea-like",
       elevation: "1,800 - 2,200m",
       score: "89+",
-      image: yirgacheffeImage,
+      image: yirgachafenatural,
       tag: "Floral & Bright",
     },
     {
       id: 2,
+      region: "Yirgacheffe",
+      type: "Natural Process",
+      short_desc:
+        "A natural fruit bomb bursting with intense blueberry notes. The process creates a heavy body with distinct floral undertones.",
+      long_desc:
+        "Dried with the cherry attached, this Natural Yirgacheffe imparts a wild, wine-like sweetness. Famous for its distinct blueberry note, it is often called a 'fruit bomb' with a syrupy texture coating the palate. Flavors of ripe strawberry and candied lemon shine through, all while maintaining signature floral aromatics.",
+      profile: "Blueberry, Strawberry, Candied Lemon, Floral",
+      elevation: "1,800 - 2,200m",
+      score: "90+",
+      image: yirgachafeWashed,
+      tag: "Fruity & Candied",
+    },
+
+    // --- Sidama ---
+    {
+      id: 3,
       region: "Sidama",
       type: "Natural Process",
-      description:
-        "Sidama is the birthplace of coffee itself, offering a diverse range of flavors from arguably the most famous coffee-producing region. These natural process beans are sundried on African beds, allowing the fruit to impart a deep, wine-like sweetness and a rich, creamy body. A robust choice that balances acidity with a profound fruity complexity.",
-      profile: "Apricot, Peach, Dark Chocolate, Red Wine",
+      short_desc:
+        "Offers profound sweetness and earthy complexity from diverse landscapes. Ripe stone fruit tones are supported by a velvety mouthfeel.",
+      long_desc:
+        "Sidama is the birthplace of coffee, and this Natural bean honors that heritage with deep, complex flavors. Sun-dried on raised beds, the beans absorb the cherry's sweetness, creating a profile of ripe berries and stone fruit. Notes of apricot jam and red wine are balanced by a full body that excels in every brew.",
+      profile: "Strawberry, Blueberry, Floral, Honey",
       elevation: "1,500 - 2,200m",
       score: "87+",
       image: sidamaImage,
       tag: "Fruity & Sweet",
     },
     {
-      id: 3,
+      id: 4,
+      region: "Sidama",
+      type: "Washed Process",
+      short_desc:
+        "A prime example of elegance with bright citric acidity. It presents a harmonious balance of lemon, bergamot, and tea-like spice.",
+      long_desc:
+        "This Washed Sidama shines with a clarity that highlights the region's unique terroir. The washing process allows intrinsic citrus and herbal flavors to come forward, supported by cane sugar sweetness. Notes of lime, tangerine, and fresh herbs create a sophisticated cup that offers equal parts complexity and drinkability.",
+      profile: "Bergamot, Stone Fruit, Lemon, Herbal",
+      elevation: "1,600 - 2,100m",
+      score: "88+",
+      image: sidamaWashed,
+      tag: "Elegant & Citrusy",
+    },
+
+    // --- Guji ---
+    {
+      id: 5,
       region: "Guji",
       type: "Natural Process",
-      description:
-        "Guji coffees have recently stormed the specialty scene with their unique terroir. Isolated in the southern highlands, Guji beans benefit from rich, volcanic soil that produces an explosively sweet profile. Expect a jammy mouthfeel and intense berry notes that are clean, distinct, and incredibly vibrant.",
-      profile: "Strawberry Jam, Blueberry, Tropical Fruit, Honey",
+      short_desc:
+        "Explosively sweet and jammy from rich volcanic soils. Delivers tropical fruit flavors from mango to passion fruit with deep berry notes.",
+      long_desc:
+        "Guji Natural is a testament to the region's rich volcanic soil and dense forests. The cup is incredibly sweet, likened to fruit compote, with prominent notes of blackberry and tropical fruits. It has a luscious, syrup-like mouthfeel that lingers long after each sip, with hints of dark chocolate adding depth.",
+      profile: "Peach, Orange, Honey, Floral",
       elevation: "1,800 - 2,300m",
       score: "90+",
-      image: gujiImage,
+      image: gujiNatural,
       tag: "Exotic & Jammy",
     },
     {
-      id: 4,
+      id: 6,
+      region: "Guji",
+      type: "Washed Process",
+      short_desc:
+        "Defined by pristine clarity, offering delicate peach and lemon notes. The refined, sparkling acidity elevates the overall sweetness.",
+      long_desc:
+        "Meticulous processing reveals a coffee of exceptional structure and elegance in this Washed Guji. The clean cup showcases notes of white peach, nectarine, and honeysuckle. Its refined, sparkling acidity dances on the tongue like champagne. The finish is long and sweet with a tea-like quality.",
+      profile: "Lemon, Peach, Jasmine, Black Tea",
+      elevation: "1,900 - 2,200m",
+      score: "88+",
+      image: gujiImage,
+      tag: "Bright & Floral",
+    },
+
+
+    // --- Other Regions ---
+    {
+      id: 8,
+      region: "Limu",
+      type: "Washed Process",
+      short_desc:
+        "Known for spicy notes of sweet spice and brown sugar. The body is round and smooth, offering a milder, balanced alternative.",
+      long_desc:
+        "Hailing from western Ethiopia, Limu is famous for its balanced and rounded cup. This washed lot brings out a signature spiciness, reminiscent of cinnamon, paired with wine-like acidity. It is smoother and less aggressive than southern beans, notes of brown sugar and mild tangerine make it excellent for everyday drinking.",
+      profile: "Sweet Spice, Citrus, Brown Sugar",
+      elevation: "1,100 - 1,900m",
+      score: "86+",
+      image: limuWashed,
+      tag: "Spicy & Balanced",
+    },
+    {
+      id: 9,
       region: "Harrar",
       type: "Dry Process",
-      description:
-        "Harrar is one of the oldest coffee varieties, grown in the eastern highlands. Famous for its intense, heavy body and distinct blueberry notes, it is often referred to as the 'mocha' of coffees. These beans are dry-processed, preserving the wild, gamey, and spicy characteristics that make Ethiopian coffee legendary.",
-      profile: "Wild Blueberry, Cardamom, Cocoa, Dried Figs",
+      short_desc:
+        "Legendary and wild, known for heavy body and mocha notes. Expect bold dark cocoa, dried fruits, and a distinct blueberry finish.",
+      long_desc:
+        "Grown in the eastern highlands, Harrar is naturally dry-processed in an arid climate for a 'wild' profile. It is famous for its distinct mocha flavor, combining heavy chocolate and blueberry notes. The cup is full-bodied with hints of leather, dried spices, and figs, offering a historic and rustic intensity.",
+      profile: "Blueberry, Cocoa, Dried Fruit, Spice",
       elevation: "1,400 - 2,000m",
       score: "85+",
       image: harrarImage,
       tag: "Bold & Wild",
     },
-    {
-      id: 5,
-      region: "Limu",
-      type: "Washed Process",
-      description:
-        "Limu coffee is grown in the southwest of Ethiopia and is generally wet-processed. It is known for being a well-balanced cup with a distinctively spicy flavor and sweet wine-like acidity. It offers a sharper edge than Sidama but remains incredibly smooth, making it a favorite for lovers of a classic, rounded espresso.",
-      profile: "Sweet Spice, Brown Sugar, Mild Citrus, Floral",
-      elevation: "1,100 - 1,900m",
-      score: "86+",
-      image: limuImage,
-      tag: "Spicy & Balanced",
-    },
   ];
 
   return (
-    <div className="Playfair Display min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white selection:bg-red-500/30">
+    <div className="Playfair Display relative min-h-screen bg-[#FDFCF8] dark:bg-[#0a0a0a] text-gray-900 dark:text-white selection:bg-red-500/30 overflow-hidden">
+      {/* 🌟 Global Animated Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none transform-gpu overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-200/40 dark:bg-orange-900/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob" />
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-red-200/40 dark:bg-red-900/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-[20%] left-[20%] w-[600px] h-[600px] bg-green-200/40 dark:bg-green-900/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob animation-delay-4000" />
+        <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-amber-100/40 dark:bg-amber-900/10 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob" />
+      </div>
       {/* 🌟 Hero Section */}
       <section className="relative py-32 px-6 md:px-20 text-center overflow-hidden">
-        {/* Background Accents */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-red-600/5 dark:bg-red-600/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-blue-600/5 dark:bg-blue-600/10 rounded-full blur-[100px]" />
-        </div>
+
 
         <div className="relative z-10 max-w-4xl mx-auto space-y-6">
           <span className="text-red-500 font-bold tracking-[0.2em] text-sm uppercase animate-fade-in-up">
@@ -98,105 +199,72 @@ const Products = () => {
         </div>
       </section>
 
-      {/* ☕ Product Detail List (Alternating) */}
-      <section className="py-10 px-6 md:px-20 max-w-8xl mx-auto space-y-32">
-        {coffeeProducts.map((product, index) => (
-          <div
-            key={product.id}
-            className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-24 group ${
-              index % 2 === 1 ? "lg:flex-row-reverse" : ""
-            }`}
-          >
-            {/* Image Half */}
-            <div className="w-full lg:w-1/2 relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 group-hover:shadow-[0_20px_50px_rgba(220,38,38,0.15)] h-[400px] lg:h-[600px] border border-gray-300 dark:border-white/5">
-                <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
+      {/* ☕ Product Grid Section */}
+      <section className="relative z-10 py-10 px-6 md:px-20 max-w-8xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {coffeeProducts.map((product) => (
+            <div
+              key={product.id}
+              className="group flex flex-col bg-white dark:bg-white/5 rounded-3xl overflow-hidden border border-gray-100 dark:border-white/10 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+            >
+              {/* Image Section */}
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.region}
-                  className="w-200 h-150 object-cover transform transition-transform duration-1000 group-hover:scale-105"
+                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
-
-                {/* Floating Badge */}
-                <div className="absolute bottom-6 left-6 z-20 bg-white/80 dark:bg-white/10 backdrop-blur-md border border-gray-300 dark:border-white/20 px-6 py-3 rounded-2xl flex items-center gap-3">
-                  <Award className="text-red-500 w-8 h-8" />
-                  <div>
-                    <p className="text-xs text-gray-600 dark:text-gray-300 uppercase tracking-wider">
-                      SCA Score
-                    </p>
-                    <p className="text-xl font-bold text-gray-900 dark:text-white">
-                      {product.score}
-                    </p>
-                  </div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
 
-              {/* Decorative elements behind image */}
-              <div
-                className={`absolute -z-10 w-full h-full top-6 ${
-                  index % 2 === 0 ? "left-6" : "right-6"
-                } bg-gradient-to-br from-red-600/20 to-transparent rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
-              />
-            </div>
-
-            {/* Content Half */}
-            <div className="w-full lg:w-1/2 space-y-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <span className="px-4 py-1 rounded-full bg-red-600/20 text-red-500 text-xs font-bold uppercase tracking-widest border border-red-500/20">
-                    {product.tag}
-                  </span>
-                  <span className="text-gray-600 dark:text-gray-400 text-sm font-medium tracking-wide">
-                    {product.type}
-                  </span>
+              {/* Content Section */}
+              <div className="p-6 flex flex-col flex-grow">
+                {/* Header */}
+                <div className="mb-4">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-[family-name:var(--font-playfair)]">
+                    {product.region} {product.type.split(" ")[0]}
+                  </h2>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm font-medium mt-1">
+                    {product.region}
+                  </p>
                 </div>
 
-                <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                  {product.region}
-                </h2>
-              </div>
+                {/* Description */}
+                <p className="text-gray-700 dark:text-gray-200 text-base font-semibold leading-relaxed line-clamp-3 mb-6">
+                  {product.short_desc}
+                </p>
 
-              <div className="w-20 h-1 bg-gradient-to-r from-red-600 to-transparent rounded-full" />
-
-              <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                {product.description}
-              </p>
-
-              {/* Specs Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="p-4 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-white/5 hover:border-gray-400 dark:hover:border-white/10 transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Mountain className="text-orange-400 w-5 h-5" />
-                    <h4 className="text-sm font-bold text-gray-900 dark:text-gray-200">
-                      Elevation
-                    </h4>
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-400 text-sm">{product.elevation}</p>
+                {/* Flavor Profile Pills */}
+                <div className="mt-auto flex flex-wrap gap-2 mb-6">
+                  {product.profile.split(", ").map((flavor, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full"
+                    >
+                      {flavor}
+                    </span>
+                  ))}
                 </div>
-                <div className="p-4 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-white/5 hover:border-gray-400 dark:hover:border-white/10 transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Droplets className="text-blue-400 w-5 h-5" />
-                    <h4 className="text-sm font-bold text-gray-900 dark:text-gray-200">
-                      Key Notes
-                    </h4>
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-400 text-sm">{product.profile}</p>
-                </div>
-              </div>
 
-              {/* <div className="pt-6">
-                <button className="group flex items-center gap-2 text-white bg-transparent hover:text-red-500 transition-colors duration-300 font-semibold text-lg pb-1 border-b border-transparent hover:border-red-500">
-                  Sourcing Details{" "}
-                  <ArrowRight className="w-5 h-5 transform group-hover:translate-x-2 transition-transform" />
+                {/* Request Button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedProduct(product);
+                  }}
+                  className="w-full py-3 bg-[#B87333] text-white font-bold rounded-xl hover:bg-[#A55233] hover:shadow-[0_8px_25px_rgba(198,107,68,0.4)] hover:-translate-y-1 transition-all duration-300 active:scale-95 shadow-md"
+                >
+                  Interested ? Inquire Now
                 </button>
-              </div> */}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </section>
 
       {/* 🚀 Final CTA Section */}
-      <section className="py-32 px-6 text-center relative overflow-hidden mt-20">
+      <section className="relative z-10 py-32 px-6 text-center overflow-hidden mt-20">
         <div className="absolute inset-0 bg-red-900/5 dark:bg-red-900/5 bg-red-500/5 -skew-y-3 transform origin-bottom-right" />
         <div className="relative z-10 max-w-3xl mx-auto space-y-8">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
@@ -214,6 +282,263 @@ const Products = () => {
           </Link>
         </div>
       </section>
+
+      {/* 🟢 Product Logic Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setSelectedProduct(null)}
+          />
+
+          <div className="relative bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-6xl h-[85vh] shadow-2xl animate-fade-in-up flex flex-col md:flex-row overflow-hidden">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedProduct(null);
+              }}
+              className="absolute top-4 right-4 z-10 p-2 bg-black/10 dark:bg-white/10 hover:bg-black/20 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6 text-gray-900 dark:text-white" />
+            </button>
+
+            {/* Modal Image */}
+            <div className="w-full md:w-1/3 relative h-64 md:h-full">
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.region}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:bg-gradient-to-r" />
+              <div className="absolute bottom-6 left-6 text-white md:hidden">
+                <h3 className="text-3xl font-bold font-[family-name:var(--font-playfair)]">
+                  {selectedProduct.region}
+                </h3>
+                <p className="opacity-90">{selectedProduct.type}</p>
+              </div>
+            </div>
+
+            {/* Modal Content - Swappable */}
+            <div className="w-full md:w-2/3 p-8 md:p-12 bg-white dark:bg-slate-900 overflow-y-auto relative">
+              {!showForm ? (
+                // 1. DETAIL VIEW
+                <div className="flex flex-col h-full space-y-6 animate-fade-in-right">
+                  <div className="hidden md:block">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-4xl font-bold text-gray-900 dark:text-white font-[family-name:var(--font-playfair)]">
+                        {selectedProduct.region}
+                      </h3>
+                  {/*    <div className="flex items-center gap-2 bg-red-100 dark:bg-red-900/30 px-3 py-1 rounded-full">
+                        <Award className="w-4 h-4 text-red-600 dark:text-red-400" />
+                        <span className="font-bold text-red-700 dark:text-red-300 text-sm">
+                          {selectedProduct.score}
+                        </span>
+                      </div> */}
+                    </div>
+                    <p className="text-xl text-gray-500">
+                      {selectedProduct.type}
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      About this Coffee
+                    </h4>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                      {selectedProduct.long_desc}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 py-6 border-y border-gray-100 dark:border-white/10">
+                  {/*    <div>
+                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wilder">
+                        Process
+                      </span>
+                      <p className="font-medium text-gray-900 dark:text-white">
+                        {selectedProduct.type}
+                      </p>
+                    </div>
+                  <div>
+                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wilder">
+                        Elevation
+                      </span>
+                      <p className="font-medium text-gray-900 dark:text-white">
+                        {selectedProduct.elevation}
+                      </p>
+                    </div> */}
+                    <div className="col-span-2">
+                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wilder">
+                        Flavor Profile
+                      </span>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {selectedProduct.profile
+                          .split(", ")
+                          .map((flavor, i) => (
+                            <span
+                              key={i}
+                              className="px-3 py-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 text-sm rounded-md"
+                            >
+                              {flavor}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 pt-2 mt-auto">
+                    <button
+                      type="button"
+                      onClick={() => setShowForm(true)}
+                      className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#C66B44] text-white font-bold rounded-xl hover:bg-[#A55233] hover:shadow-[0_10px_30px_rgba(198,107,68,0.4)] hover:-translate-y-1 transition-all duration-300 shadow-xl"
+                    >
+                      <Mail className="w-5 h-5" />
+                      Contact with Email
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setSelectedProduct(null);
+                      }}
+                      className="px-8 py-4 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                // 2. CONTACT FORM VIEW
+                <div className="flex flex-col h-full animate-fade-in-left">
+                  {/* Form Header */}
+                  <div className="flex items-center gap-4 mb-8">
+                    <button
+                      onClick={() => setShowForm(false)}
+                      className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors"
+                    >
+                      <ChevronLeft className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                    </button>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        Inquire about {selectedProduct.region}
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        We'll get back to you within 24 hours.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Success State */}
+                  {formStatus === "success" ? (
+                    <div className="flex-grow flex flex-col items-center justify-center text-center space-y-6">
+                      <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                        <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h4 className="text-2xl font-bold text-gray-900 dark:text-white">
+                          Request Sent!
+                        </h4>
+                        <p className="text-gray-600 dark:text-gray-300 mt-2">
+                          Thanks for your interest in our{" "}
+                          {selectedProduct.region}. Our sourcing team will reach
+                          out shortly.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setSelectedProduct(null)}
+                        className="mt-4 px-8 py-3 bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white font-bold rounded-full hover:bg-gray-200"
+                      >
+                        Close Window
+                      </button>
+                    </div>
+                  ) : (
+                    /* The Form */
+                    <form
+                      onSubmit={handleFormSubmit}
+                      className="flex-grow flex flex-col space-y-5"
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#1B4D3E]/50 outline-none transition-all"
+                            placeholder="Your name"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#1B4D3E]/50 outline-none transition-all"
+                            placeholder="your@email.com"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#1B4D3E]/50 outline-none transition-all"
+                            placeholder="Shipping address"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Company <span className="opacity-50">(Opt)</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#1B4D3E]/50 outline-none transition-all"
+                            placeholder="Business name"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 flex-grow">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                          Message
+                        </label>
+                        <textarea
+                          required
+                          rows="4"
+                          defaultValue={`I'm interested in receiving a sample of the ${selectedProduct.region} ${selectedProduct.type}.`}
+                          className="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#1B4D3E]/50 outline-none transition-all resize-none h-full min-h-[120px]"
+                        ></textarea>
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={formStatus === "submitting"}
+                        className="w-full py-4 mt-auto bg-[#C66B44] text-white font-bold rounded-xl hover:bg-[#A55233] hover:shadow-[0_10px_30_rgba(198,107,68,0.4)] hover:-translate-y-1 transition-all duration-300 shadow-xl flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                      >
+                        {formStatus === "submitting" ? (
+                          "Sending Request..."
+                        ) : (
+                          <>
+                            Send Request <Send className="w-4 h-4" />
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

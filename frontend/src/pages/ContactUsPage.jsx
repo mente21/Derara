@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Mail,
   MapPin,
@@ -13,14 +14,24 @@ import {
 
 
 const ContactUsPage = () => {
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    address: "",
+    company: "",
     subject: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Pre-fill subject from navigation state
+  useEffect(() => {
+    if (location.state?.subject) {
+      setFormData((prev) => ({ ...prev, subject: location.state.subject }));
+    }
+  }, [location.state]);
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -35,7 +46,7 @@ const ContactUsPage = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
-      setFormData({ name: "", email: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", address: "", company: "", subject: "", message: "" });
       // Reset success message after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     }, 2000);
@@ -158,6 +169,24 @@ const ContactUsPage = () => {
                   onChange={handleChange}
                 />
               </div>
+
+               <InputGroup
+                label="Address"
+                name="address"
+                type="text"
+                placeholder="123 Coffee Street"
+                value={formData.address}
+                onChange={handleChange}
+              />
+              
+              <InputGroup
+                label="Company (Optional)"
+                name="company"
+                type="text"
+                placeholder="Coffee Co. Ltd"
+                value={formData.company}
+                onChange={handleChange}
+              />
 
               <InputGroup
                 label="Subject"
