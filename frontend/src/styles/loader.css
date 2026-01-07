@@ -1,0 +1,33 @@
+/* Professional Loader Animations */
+
+@keyframes fadeScale {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(0.95);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-scale {
+    animation: fadeScale 1.5s ease-in-out infinite;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}

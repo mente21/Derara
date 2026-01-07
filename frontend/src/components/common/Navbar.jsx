@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -12,11 +13,12 @@ const navLinks = [
 
 const Navbar = ({ mobileOpen, setMobileOpen }) => {
   const location = useLocation();
+  const { isDarkMode } = useTheme();
 
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className="hidden lg:flex space-x-1 xl:space-x-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 shadow-inner">
+      <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 bg-gray-100 dark:bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-300 dark:border-white/10 shadow-inner">
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path;
           return (
@@ -24,19 +26,17 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
               key={link.name}
               to={link.path}
               className={`relative px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-all duration-300 rounded-full group ${isActive
-                  ? "text-white bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
-                  : "text-white/80 hover:text-white hover:bg-white/10"
+                ? "text-white bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
+                : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
             >
               {link.name}
-              {/* Optional: subtle glow effect for non-active links on hover if desired, 
-                  but the bg-white/10 handles it elegantly. */}
             </Link>
           );
         })}
       </nav>
 
-      {/* Mobile Navbar Overlay */}
+      {/* Mobile Navbar Overlay - Reconstructed */}
       <div
         className={`lg:hidden fixed inset-0 z-40 flex justify-end transition-opacity duration-300 ${mobileOpen
           ? "opacity-100 pointer-events-auto"
@@ -50,16 +50,29 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
           onClick={() => setMobileOpen(false)}
         />
 
-        {/* Drawer Menu */}
+        {/* Drawer Content */}
         <div
           className={`relative w-[80%] max-w-sm h-full bg-gray-900 border-l border-white/10 shadow-2xl flex flex-col pt-24 pb-10 px-8 transition-transform duration-500 ease-out transform ${mobileOpen ? "translate-x-0" : "translate-x-full"
             }`}
         >
-          {/* Decorative shapes */}
-          <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+          {/* Header */}
+          <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+            <span className="text-xl font-bold text-gray-900 dark:text-white tracking-widest">
+              MENU
+            </span>
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="text-gray-500 hover:text-red-600 transition-colors"
+            >
+              {/* Close Icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-          <div className="flex flex-col space-y-4">
+          {/* Links List */}
+          <div className="flex-1 overflow-y-auto py-4 px-6 space-y-3">
             {navLinks.map((link, index) => {
               const isActive = location.pathname === link.path;
               return (
@@ -88,9 +101,10 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
             })}
           </div>
 
-          <div className="mt-auto">
-            <p className="text-white/40 text-xs text-center uppercase tracking-widest">
-              Derara &copy; {new Date().getFullYear()}
+          {/* Mobile Footer Area */}
+          <div className="p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-black/20 mt-auto">
+            <p className="text-xs text-center text-gray-400 uppercase tracking-widest font-medium">
+              Derara © {new Date().getFullYear()}
             </p>
           </div>
         </div>

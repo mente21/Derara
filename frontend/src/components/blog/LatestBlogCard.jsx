@@ -116,20 +116,20 @@ export default function LatestBlog() {
                             </p>
 
                             {post.author && (
-                                <div className="flex items-center gap-x-4 border-t border-gray-100/10 pt-4 mt-6">
+                                <div className="flex items-center gap-x-4 border-t border-gray-300 dark:border-gray-100/10 pt-4 mt-6">
                                     <img
                                         src={post.author.imageUrl}
                                         alt=""
-                                        className="h-10 w-10 rounded-full bg-gray-50"
+                                        className="h-10 w-10 rounded-full bg-gray-200 dark:bg-white/10"
                                     />
                                     <div className="text-sm leading-6">
-                                        <p className="font-semibold text-white">
+                                        <p className="font-semibold text-gray-900 dark:text-white">
                                             <a href={post.author.href}>
                                                 <span className="absolute inset-0" />
                                                 {post.author.name}
                                             </a>
                                         </p>
-                                        <p className="text-gray-300">{post.author.role}</p>
+                                        <p className="text-gray-700 dark:text-gray-300 font-medium dark:font-normal">{post.author.role}</p>
                                     </div>
                                 </div>
                             )}

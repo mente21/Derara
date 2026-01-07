@@ -78,17 +78,17 @@ const majorCertificates = [
 
 const Certifications = () => {
   return (
-    <section className="py-20 bg-black border-y border-white/5 relative overflow-hidden">
+    <section className="py-20 bg-white dark:bg-black border-y border-gray-200 dark:border-white/5 relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/3 dark:bg-red-600/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Part 1: Major Certificates (Static & Big) */}
       <div className="container mx-auto px-6 mb-24">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             Our <span className="text-red-500">Certificates</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             We are committed to maintaining the highest standards of quality and
             excellence.
           </p>
@@ -101,10 +101,10 @@ const Certifications = () => {
               {majorCertificates.map((cert) => (
                 <div
                   key={cert.id}
-                  className="group relative bg-white/5 border border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0"
+                  className="group relative bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0"
                 >
                   <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all duration-300 z-10" />
+                    <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-300 z-10" />
                     <img
                       src={cert.image}
                       alt={cert.title}
@@ -112,10 +112,10 @@ const Certifications = () => {
                     />
                   </div>
                   <div className="mt-6 text-center">
-                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors whitespace-normal">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors whitespace-normal">
                       {cert.title}
                     </h3>
-                    <p className="text-gray-400 text-sm whitespace-normal">
+                    <p className="text-gray-700 dark:text-gray-400 text-sm whitespace-normal">
                       {cert.description}
                     </p>
                   </div>
@@ -185,7 +185,7 @@ const Certifications = () => {
           <h3 className="text-center text-red-500 uppercase tracking-[0.2em] text-sm font-semibold mb-2">
             Testimonials
           </h3>
-          <h2 className="text-center text-3xl font-bold text-white">
+          <h2 className="text-center text-3xl font-bold text-gray-900 dark:text-white">
             What Our Partners Say
           </h2>
         </div>
@@ -218,20 +218,20 @@ const Certifications = () => {
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="w-[350px] bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-white/10 transition-colors whitespace-normal"
+                  className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal"
                 >
-                  <p className="text-gray-300 italic">"{testimonial.feedback}"</p>
-                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-white/5">
+                  <p className="text-gray-700 dark:text-gray-300 italic font-semibold dark:font-normal">"{testimonial.feedback}"</p>
+                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-300 dark:border-white/5">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
                     />
                     <div>
-                      <h4 className="text-white font-bold text-sm">
+                      <h4 className="text-gray-900 dark:text-white font-bold text-sm">
                         {testimonial.name}
                       </h4>
-                      <p className="text-gray-500 text-xs">
+                      <p className="text-gray-600 dark:text-gray-500 text-xs">
                         {testimonial.role}, {testimonial.company}
                       </p>
                     </div>
@@ -245,20 +245,20 @@ const Certifications = () => {
               {testimonials.map((testimonial) => (
                 <div
                   key={`${testimonial.id}-dup`}
-                  className="w-[350px] bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-white/10 transition-colors whitespace-normal"
+                  className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal"
                 >
-                  <p className="text-gray-300 italic">"{testimonial.feedback}"</p>
-                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-white/5">
+                  <p className="text-gray-700 dark:text-gray-300 italic font-semibold dark:font-normal">"{testimonial.feedback}"</p>
+                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-300 dark:border-white/5">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
                     />
                     <div>
-                      <h4 className="text-white font-bold text-sm">
+                      <h4 className="text-gray-900 dark:text-white font-bold text-sm">
                         {testimonial.name}
                       </h4>
-                      <p className="text-gray-500 text-xs">
+                      <p className="text-gray-600 dark:text-gray-500 text-xs">
                         {testimonial.role}, {testimonial.company}
                       </p>
                     </div>
@@ -272,20 +272,20 @@ const Certifications = () => {
               {testimonials.map((testimonial) => (
                 <div
                   key={`${testimonial.id}-dup2`}
-                  className="w-[350px] bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-white/10 transition-colors whitespace-normal"
+                  className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal"
                 >
-                  <p className="text-gray-300 italic">"{testimonial.feedback}"</p>
-                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-white/5">
+                  <p className="text-gray-700 dark:text-gray-300 italic font-semibold dark:font-normal">"{testimonial.feedback}"</p>
+                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-300 dark:border-white/5">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
                     />
                     <div>
-                      <h4 className="text-white font-bold text-sm">
+                      <h4 className="text-gray-900 dark:text-white font-bold text-sm">
                         {testimonial.name}
                       </h4>
-                      <p className="text-gray-500 text-xs">
+                      <p className="text-gray-600 dark:text-gray-500 text-xs">
                         {testimonial.role}, {testimonial.company}
                       </p>
                     </div>

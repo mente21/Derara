@@ -135,6 +135,9 @@ const Carousel = () => {
           ></button>
         ))}
       </div>
+
+      {/* Fade effect at bottom for smooth transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-black via-white/50 dark:via-black/50 to-transparent pointer-events-none z-10"></div>
     </div>
   );
 };

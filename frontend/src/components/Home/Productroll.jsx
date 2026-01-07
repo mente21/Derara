@@ -51,13 +51,13 @@ const products = [
 ];
 
 const ProductCard = ({ product }) => (
-  <div className="w-[300px] md:w-[320px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden group hover:border-red-500/50 hover:shadow-2xl hover:bg-white/10 transition-all duration-500 flex-shrink-0 relative">
+  <div className="w-[300px] md:w-[320px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl overflow-hidden group hover:border-red-500/50 hover:shadow-2xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-500 flex-shrink-0 relative">
     {/* Image Container */}
     <div className="h-64 overflow-hidden relative">
       <span className="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
         {product.tag}
       </span>
-      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all duration-300 z-0" />
+      <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-300 z-0" />
       <img
         src={product.image}
         alt={product.name}
@@ -68,7 +68,7 @@ const ProductCard = ({ product }) => (
     {/* Content */}
     <div className="p-5">
       <div className="flex justify-between items-start mb-2">
-        <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition-colors line-clamp-1">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors line-clamp-1">
           {product.name}
         </h3>
       </div>
@@ -85,13 +85,13 @@ const ProductCard = ({ product }) => (
             }`}
           />
         ))}
-        <span className="text-gray-400 text-xs ml-2">({product.rating})</span>
+        <span className="text-gray-600 dark:text-gray-400 text-xs ml-2">({product.rating})</span>
       </div>
 
       <div className="flex items-center justify-between mt-auto">
         <Link
           to="/products"
-          className="text-white text-sm font-semibold hover:text-red-400 transition-colors flex items-center group/btn"
+          className="text-gray-900 dark:text-white text-sm font-semibold hover:text-red-500 dark:hover:text-red-400 transition-colors flex items-center group/btn"
         >
           Details{" "}
           <ArrowRight
@@ -106,7 +106,7 @@ const ProductCard = ({ product }) => (
 
 const Productroll = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-black to-gray-900 border-y border-white/5 relative overflow-hidden">
+    <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-black dark:to-gray-900 bg-gradient-to-b from-gray-50 to-white border-y border-gray-200 dark:border-white/5 relative overflow-hidden">
       {/* Style for the slow roll animation */}
       <style>
         {`
@@ -125,7 +125,7 @@ const Productroll = () => {
           <h2 className="text-red-500 font-bold uppercase tracking-widest text-sm mb-2 animate-fade-in-up">
             Our Products
           </h2>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white">
             Featured{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
               Collections
@@ -134,7 +134,7 @@ const Productroll = () => {
         </div>
         <Link
           to="/products"
-          className="hidden md:flex items-center space-x-2 text-white border border-white/20 px-6 py-3 rounded-full hover:bg-red-600 hover:border-red-600 transition-all duration-300 group"
+          className="hidden md:flex items-center space-x-2 text-gray-900 dark:text-white border border-gray-300 dark:border-white/20 px-6 py-3 rounded-full hover:bg-red-600 hover:border-red-600 hover:text-white transition-all duration-300 group"
         >
           <span>View All Products</span>
           <ArrowRight
@@ -173,7 +173,7 @@ const Productroll = () => {
       <div className="md:hidden flex justify-center mt-8">
         <Link
           to="/products"
-          className="flex items-center space-x-2 text-white border border-white/20 px-6 py-3 rounded-full hover:bg-red-600 hover:border-red-600 transition-all duration-300"
+          className="flex items-center space-x-2 text-gray-900 dark:text-white border border-gray-300 dark:border-white/20 px-6 py-3 rounded-full hover:bg-red-600 hover:border-red-600 hover:text-white transition-all duration-300"
         >
           <span>View All Products</span>
           <ArrowRight size={18} />
