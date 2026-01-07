@@ -26,13 +26,14 @@ const Header = () => {
     setMobileOpen(false);
   }, [location.pathname]);
 
+  const isBlogPage = location.pathname === '/blog';
+
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 dark:bg-black/80 backdrop-blur-md shadow-lg py-3 border-b border-gray-200 dark:border-white/10"
-          : "bg-white/80 dark:bg-transparent backdrop-blur-sm py-5 border-b border-gray-200/50 dark:border-transparent"
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled || isBlogPage
+        ? "bg-black/80 backdrop-blur-md shadow-lg py-3 border-b border-white/10"
+        : "bg-transparent py-5 border-transparent"
+        }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* LEFT: Logo */}
