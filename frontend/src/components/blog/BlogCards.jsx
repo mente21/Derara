@@ -23,9 +23,9 @@ const BlogCards = () => {
             {/* Title */}
             <div className="text-center mb-12">
                 <h1 className="text-3xl font-black text-[#D62828] uppercase tracking-widest" style={{ fontFamily: '"Orbitron", sans-serif' }}>
-                    This Week <span className="text-black underline decoration-[#D62828] decoration-4 underline-offset-4">Hot</span> Blogs
+                    This Week <span className="text-black dark:text-white underline decoration-[#D62828] decoration-4 underline-offset-4">Hot</span> Blogs
                 </h1>
-                <p className="mt-4 text-gray-800 font-medium max-w-2xl mx-auto">
+                <p className="mt-4 text-gray-800 dark:text-gray-300 font-medium max-w-2xl mx-auto">
                     Stay updated with trending insights, fresh stories, and top Ethiopian coffee highlights.
                 </p>
             </div>
@@ -47,15 +47,15 @@ const BlogCards = () => {
                             </div>
 
                             <div className="grow">
-                                <h3 className="text-lg font-bold text-[#2D1B13] group-hover:text-gray-600 transition-colors">
+                                <h3 className="text-lg font-bold text-[#2D1B13] dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
                                     {post.smallTitle || post.title}
                                 </h3>
 
-                                <p className="mt-3 text-base text-gray-700 font-medium leading-relaxed border-l-2 border-black pl-3">
+                                <p className="mt-3 text-base text-gray-700 dark:text-gray-300 font-medium leading-relaxed border-l-2 border-black dark:border-white pl-3">
                                     {post.smallDescription || post.description}
                                 </p>
 
-                                <p className="mt-4 inline-flex items-center gap-x-1 text-sm text-[#D62828] font-bold uppercase tracking-wider group-hover:text-black transition-colors">
+                                <p className="mt-4 inline-flex items-center gap-x-1 text-sm text-[#D62828] font-bold uppercase tracking-wider group-hover:text-black dark:group-hover:text-white transition-colors">
                                     Read more {ReadMoreArrow}
                                 </p>
                             </div>

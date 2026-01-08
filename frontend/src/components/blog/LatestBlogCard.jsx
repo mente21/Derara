@@ -4,42 +4,42 @@ import { motion } from "framer-motion";
 
 export default function LatestBlog() {
     return (
-        <div className="bg-white py-24 sm:py-32 relative overflow-hidden">
+        <div className="bg-white dark:bg-[#0a0a0a] py-24 sm:py-32 relative overflow-hidden transition-colors duration-300">
             {/* Background Decorative Blob - Yellow to Light Gray/Black */}
-            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-black rounded-full mix-blend-multiply filter blur-3xl opacity-5 animate-blob"></div>
-            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-[#D62828] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-black rounded-full mix-blend-multiply filter blur-3xl opacity-5 dark:opacity-20 animate-blob"></div>
+            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-[#D62828] rounded-full mix-blend-multiply filter blur-3xl opacity-10 dark:opacity-20 animate-blob animation-delay-2000"></div>
 
             {/* Coffee Theme Icons Background Pattern */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Large Coffee Cup Top Right */}
-                <svg className="absolute top-20 right-20 w-32 h-32 text-[#D62828] opacity-5 transform rotate-12" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute top-20 right-20 w-32 h-32 text-[#D62828] opacity-5 dark:opacity-10 transform rotate-12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z" />
                 </svg>
 
                 {/* Large Leaf Bottom Right */}
-                <svg className="absolute bottom-10 right-10 w-28 h-28 text-black opacity-5 transform -rotate-45" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute bottom-10 right-10 w-28 h-28 text-black dark:text-white opacity-5 dark:opacity-10 transform -rotate-45" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17 8C8 10 5.9 16.17 3.82 21.34 5.67 22.88 12.25 24 17 21c4.75-3 5.34-12.75 0-13zM6 14c.83-.83 2-2 4-4 .83 2.17 2.17 3.17 3 4 .83-2.17 3.17-2.17 4-2-2 4-5 6-11 2zm6-9c-2 2-3 4-8 4 6-5 9-9 8-4z" />
                 </svg>
 
                 {/* SCATTERED SMALL BEANS (Correct Path) */}
                 {/* 1 */}
-                <svg className="absolute top-12 left-12 w-8 h-8 text-[#D62828] opacity-10 transform -rotate-45" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute top-12 left-12 w-8 h-8 text-[#D62828] opacity-10 dark:opacity-20 transform -rotate-45" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.07 13.88L13.88 19.07C10.12 22.83 4.02 22.83 0.26 19.07C-3.5 15.31 -3.5 9.21 0.26 5.45L5.45 0.26C9.21 -3.5 15.31 -3.5 19.07 0.26C22.83 4.02 22.83 10.12 19.07 13.88ZM11.66 9.54L7.54 5.42C6.88 4.76 5.81 4.76 5.15 5.42C4.49 6.08 4.49 7.15 5.15 7.81L9.27 11.93C9.93 12.59 11 12.59 11.66 11.93C12.32 11.27 12.32 10.2 11.66 9.54Z" />
                 </svg>
                 {/* 2 */}
-                <svg className="absolute top-32 left-1/4 w-6 h-6 text-black opacity-5 transform rotate-12" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute top-32 left-1/4 w-6 h-6 text-black dark:text-white opacity-5 dark:opacity-10 transform rotate-12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.07 13.88L13.88 19.07C10.12 22.83 4.02 22.83 0.26 19.07C-3.5 15.31 -3.5 9.21 0.26 5.45L5.45 0.26C9.21 -3.5 15.31 -3.5 19.07 0.26C22.83 4.02 22.83 10.12 19.07 13.88ZM11.66 9.54L7.54 5.42C6.88 4.76 5.81 4.76 5.15 5.42C4.49 6.08 4.49 7.15 5.15 7.81L9.27 11.93C9.93 12.59 11 12.59 11.66 11.93C12.32 11.27 12.32 10.2 11.66 9.54Z" />
                 </svg>
                 {/* 3 */}
-                <svg className="absolute top-10 right-1/3 w-5 h-5 text-[#D62828] opacity-10 transform -rotate-12" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute top-10 right-1/3 w-5 h-5 text-[#D62828] opacity-10 dark:opacity-20 transform -rotate-12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.07 13.88L13.88 19.07C10.12 22.83 4.02 22.83 0.26 19.07C-3.5 15.31 -3.5 9.21 0.26 5.45L5.45 0.26C9.21 -3.5 15.31 -3.5 19.07 0.26C22.83 4.02 22.83 10.12 19.07 13.88ZM11.66 9.54L7.54 5.42C6.88 4.76 5.81 4.76 5.15 5.42C4.49 6.08 4.49 7.15 5.15 7.81L9.27 11.93C9.93 12.59 11 12.59 11.66 11.93C12.32 11.27 12.32 10.2 11.66 9.54Z" />
                 </svg>
                 {/* 4 */}
-                <svg className="absolute bottom-20 left-10 w-9 h-9 text-black opacity-5 transform rotate-90" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute bottom-20 left-10 w-9 h-9 text-black dark:text-white opacity-5 dark:opacity-10 transform rotate-90" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.07 13.88L13.88 19.07C10.12 22.83 4.02 22.83 0.26 19.07C-3.5 15.31 -3.5 9.21 0.26 5.45L5.45 0.26C9.21 -3.5 15.31 -3.5 19.07 0.26C22.83 4.02 22.83 10.12 19.07 13.88ZM11.66 9.54L7.54 5.42C6.88 4.76 5.81 4.76 5.15 5.42C4.49 6.08 4.49 7.15 5.15 7.81L9.27 11.93C9.93 12.59 11 12.59 11.66 11.93C12.32 11.27 12.32 10.2 11.66 9.54Z" />
                 </svg>
                 {/* 5 */}
-                <svg className="absolute bottom-1/3 right-1/2 w-7 h-7 text-[#D62828] opacity-5 transform -rotate-12" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="absolute bottom-1/3 right-1/2 w-7 h-7 text-[#D62828] opacity-5 dark:opacity-20 transform -rotate-12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.07 13.88L13.88 19.07C10.12 22.83 4.02 22.83 0.26 19.07C-3.5 15.31 -3.5 9.21 0.26 5.45L5.45 0.26C9.21 -3.5 15.31 -3.5 19.07 0.26C22.83 4.02 22.83 10.12 19.07 13.88ZM11.66 9.54L7.54 5.42C6.88 4.76 5.81 4.76 5.15 5.42C4.49 6.08 4.49 7.15 5.15 7.81L9.27 11.93C9.93 12.59 11 12.59 11.66 11.93C12.32 11.27 12.32 10.2 11.66 9.54Z" />
                 </svg>
             </div>
@@ -53,15 +53,15 @@ export default function LatestBlog() {
                     className="mx-auto max-w-2xl text-center mb-16"
                 >
                     <h2 className="text-3xl font-black tracking-widest sm:text-5xl uppercase" style={{ fontFamily: '"Orbitron", sans-serif' }}>
-                        <span className="text-[#D62828]">Latest</span> <span className="text-black inline-block transform hover:scale-105 transition-transform duration-300 drop-shadow-sm">Ethiopian Coffee</span> <span className="text-[#D62828]">Blog</span>
+                        <span className="text-[#D62828]">Latest</span> <span className="text-black dark:text-white inline-block transform hover:scale-105 transition-transform duration-300 drop-shadow-sm">Ethiopian Coffee</span> <span className="text-[#D62828]">Blog</span>
                     </h2>
-                    <p className="mt-6 text-xl leading-relaxed text-gray-800 font-medium font-serif">
+                    <p className="mt-6 text-xl leading-relaxed text-gray-800 dark:text-gray-300 font-medium font-serif">
                         Discover Ethiopia’s rich coffee heritage, from unique regional flavors
                         to traditional processing methods.
                     </p>
                     <div className="mt-6 flex justify-center gap-2">
                         <div className="h-2 w-16 bg-[#D62828] rounded-full"></div>
-                        <div className="h-2 w-8 bg-black rounded-full"></div>
+                        <div className="h-2 w-8 bg-black dark:bg-white rounded-full"></div>
                     </div>
                 </motion.div>
 

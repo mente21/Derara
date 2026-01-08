@@ -208,11 +208,11 @@ const About = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative p-12 bg-[#3B2E24] rounded-[3rem] shadow-2xl text-white overflow-hidden group"
+              className="relative p-12 bg-white dark:bg-[#3B2E24] rounded-[3rem] shadow-2xl text-[#3B2E24] dark:text-white border border-gray-100 dark:border-none overflow-hidden group"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl group-hover:scale-125 transition-transform duration-700" />
               
-              <h3 className="text-3xl font-serif italic mb-10 text-amber-400">Our Sacred Commitment</h3>
+              <h3 className="text-3xl font-serif italic mb-10 text-amber-600 dark:text-amber-400">Our Sacred Commitment</h3>
               <ul className="space-y-8">
                 {[
                   { title: "Provenance", desc: "Full traceability from specific washing stations." },
@@ -221,11 +221,11 @@ const About = () => {
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-6 group/item">
                     <div className="w-12 h-12 rounded-full border border-amber-500/30 flex items-center justify-center shrink-0 group-hover/item:bg-amber-500/20 transition-colors">
-                      <CheckCircle className="w-5 h-5 text-amber-500" />
+                      <CheckCircle className="w-5 h-5 text-amber-600 dark:text-amber-500" />
                     </div>
                     <div>
                       <h4 className="font-bold text-lg mb-1">{item.title}</h4>
-                      <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+                      <p className="text-gray-600 dark:text-white/60 text-sm leading-relaxed">{item.desc}</p>
                     </div>
                   </li>
                 ))}

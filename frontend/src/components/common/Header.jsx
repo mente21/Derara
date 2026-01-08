@@ -51,12 +51,29 @@ const Header = () => {
         {/* RIGHT SECTION */}
         <div className="flex items-center space-x-3 lg:space-x-4">
           {/* CTA BUTTON - Desktop */}
-          <Link
-            to={user ? (user.role === 'admin' ? '/admin-dashboard' : user.role === 'manager' ? '/manager-dashboard' : user.role === 'employee' ? '/employee-dashboard' : '/dashboard') : "/login"}
-            className="hidden md:flex items-center px-5 py-2 text-sm lg:text-base font-bold uppercase tracking-wider text-white bg-red-600 dark:bg-transparent dark:text-white border-2 border-red-600 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:bg-red-700 dark:hover:bg-red-600 hover:border-red-700 dark:hover:border-red-600 hover:-translate-y-0.5 transform"
-          >
-            {user ? 'Dashboard' : 'Login / Signup'}
-          </Link>
+          {user ? (
+            <Link
+              to={user.role === 'admin' ? '/admin-dashboard' : user.role === 'manager' ? '/manager-dashboard' : user.role === 'employee' ? '/employee-dashboard' : '/dashboard'}
+              className="hidden md:flex items-center px-5 py-2 text-sm lg:text-base font-bold uppercase tracking-wider text-white bg-red-600 dark:bg-transparent dark:text-white border-2 border-red-600 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:bg-red-700 dark:hover:bg-red-600 hover:border-red-700 dark:hover:border-red-600 hover:-translate-y-0.5 transform font-outfit"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <div className="hidden md:flex items-center gap-3">
+              <Link
+                to="/login"
+                className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white hover:text-red-600 dark:hover:text-red-400 transition-colors duration-300 font-outfit"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/login"
+                className="px-5 py-2 text-sm font-bold uppercase tracking-wider text-white bg-red-600 border-2 border-red-600 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:bg-red-700 hover:border-red-700 hover:-translate-y-0.5 transform font-outfit"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
 
           {/* Dark Mode Toggle */}
           <button
