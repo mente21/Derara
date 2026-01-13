@@ -4,15 +4,15 @@ const taskSchema = mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    assignedTo: { type: String, required: true }, // Clerk User ID (String)
+    assignedBy: { type: String, required: true }, // Clerk User ID (String)
     status: {
       type: String,
       enum: ['pending', 'in-progress', 'completed'],
       default: 'pending',
     },
     dueDate: { type: Date },
-    report: { type: String }, // File URL or text
+    report: { type: String },
   },
   { timestamps: true }
 );

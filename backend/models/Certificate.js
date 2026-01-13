@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
 
-const serviceSchema = mongoose.Schema(
+const certificateSchema = mongoose.Schema(
   {
     title: { type: String, required: true },
-    slug: { type: String },
-    tagline: { type: String },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    bentoImage: { type: String },
-    features: { type: String }, // Comma separated
     isVisible: { type: Boolean, default: true },
     createdBy: { type: String },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Service', serviceSchema);
+module.exports = mongoose.model('Certificate', certificateSchema);

@@ -9,7 +9,7 @@ const navLinks = [
   { name: "Products", path: "/products" },
   { name: "Services", path: "/services" },
   { name: "Latest Blog", path: "/blog" },
-  { name: "Contact Us", path: "/contact" },
+  { name: "Gallery", path: "/gallery" },
 ];
 
 const Navbar = ({ mobileOpen, setMobileOpen }) => {

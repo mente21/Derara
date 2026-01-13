@@ -1,7 +1,8 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { useLocation, Routes, Route } from "react-router-dom";
+import { ClerkProvider } from "@clerk/clerk-react";
 import HomePage from "./pages/HomePage";
-import ContactUsPage from "./pages/ContactUsPage";
+import GalleryPage from "./pages/GalleryPage";
 import ServicesPage from "./pages/Services/Service";
 import LearnMore from "./pages/Services/LearnMore";
 import Blogs from "./pages/Blogs/Blog";
@@ -19,51 +20,58 @@ import ManagerDashboard from "./pages/Dashboard/ManagerDashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
 const App = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname.includes("dashboard");
+
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300">
-        <Header />
-        <main className="flex-grow">
-          <RouteLoadingWrapper>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/contact" element={<ContactUsPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/services/:serviceSlug" element={<LearnMore />} />
-              <Route path="/blog" element={<Blogs />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/products" element={<Products />} />
+    <ClerkProvider publishableKey={clerkPubKey} afterSignOutUrl="/">
+      <ThemeProvider>
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300">
+            {!isDashboard && <Header />}
+            <main className="flex-grow">
+              <RouteLoadingWrapper>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/gallery" element={<GalleryPage />} />
+                  <Route path="/services" element={<ServicesPage />} />
+                  <Route path="/services/:serviceSlug" element={<LearnMore />} />
+                  <Route path="/blog" element={<Blogs />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/products" element={<Products />} />
 
-              {/* Authentication Routes */}
-              <Route path="/login" element={<LoginPage />} />
+                  {/* Authentication Routes */}
+                  <Route path="/login" element={<LoginPage />} />
 
-              {/* Protected Protected Routes */}
-              <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
-                 <Route path="/dashboard" element={<CustomerDashboard />} />
-              </Route>
+                  {/* Protected Routes */}
+                  <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
+                    <Route path="/dashboard" element={<CustomerDashboard />} />
+                  </Route>
 
-              <Route element={<ProtectedRoute allowedRoles={['employee']} />}>
-                  <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
-              </Route>
+                  <Route element={<ProtectedRoute allowedRoles={['employee']} />}>
+                    <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+                  </Route>
 
-              <Route element={<ProtectedRoute allowedRoles={['manager']} />}>
-                  <Route path="/manager-dashboard" element={<ManagerDashboard />} />
-              </Route>
+                  <Route element={<ProtectedRoute allowedRoles={['manager']} />}>
+                    <Route path="/manager-dashboard" element={<ManagerDashboard />} />
+                  </Route>
 
-              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                  <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              </Route>
+                  <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                    <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                  </Route>
 
-              <Route path="*" element={<HomePage />} />
-            </Routes>
-          </RouteLoadingWrapper>
-        </main>
-        <Footer />
-        </div>
-      </AuthProvider>
-    </ThemeProvider>
+                  <Route path="*" element={<HomePage />} />
+                </Routes>
+              </RouteLoadingWrapper>
+            </main>
+            {!isDashboard && <Footer />}
+          </div>
+        </AuthProvider>
+      </ThemeProvider>
+    </ClerkProvider>
   );
 };
 

@@ -13,7 +13,6 @@ const generateToken = (id) => {
 // @access  Public
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(`Registration attempt for: ${email}`);
 
   try {
     const userExists = await User.findOne({ email });
@@ -22,7 +21,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Check if this is the first user in the database
+    // First account is admin
     const isFirstAccount = (await User.countDocuments({})) === 0;
     const role = isFirstAccount ? 'admin' : 'customer';
 
@@ -30,7 +29,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password,
-      role, 
+      role,
     });
 
     if (user) {

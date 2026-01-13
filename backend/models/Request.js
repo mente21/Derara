@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const requestSchema = mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    type: { type: String, required: true }, // e.g., 'Quote', 'Inquiry', 'Support'
+    user: { type: String, required: true }, // Clerk User ID (String)
+    type: { type: String, required: true },
     subject: { type: String, required: true },
     description: { type: String, required: true },
     status: {
@@ -11,7 +11,7 @@ const requestSchema = mongoose.Schema(
       enum: ['open', 'in-review', 'responded', 'closed'],
       default: 'open',
     },
-    response: { type: String }, // Response from manager/employee
+    response: { type: String },
   },
   { timestamps: true }
 );

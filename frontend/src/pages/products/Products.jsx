@@ -24,20 +24,26 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [formStatus, setFormStatus] = useState("idle"); // idle, submitting, success
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/products`);
+        const data = await res.json();
+        setProducts(Array.isArray(data) ? data.filter(p => p.isVisible !== false) : []);
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
   }, []);
 
-  // Reset form when modal closes
-  useEffect(() => {
-    if (!selectedProduct) {
-      setShowForm(false);
-      setFormStatus("idle");
-    }
-  }, [selectedProduct]);
-
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormStatus("submitting");
     // Simulate network request
@@ -46,128 +52,7 @@ const Products = () => {
     }, 1500);
   };
 
-  const coffeeProducts = [
-    // --- Yirgacheffe ---
-    {
-      id: 1,
-      region: "Yirgacheffe",
-      type: "Washed Process",
-      short_desc:
-        "Renowned for its tea-like delicacy and pristine cup profile. Expect jasmine aromas leading into vibrant lemony acidity.",
-      long_desc:
-        "Sourced from the high peaks of Gedeo, this Yirgacheffe represents the pinnacle of washed Ethiopian coffee. Carefully fermented to reveal a stunningly clean character, it offers layers of citrus zest, bergamot, and fresh jasmine flowers. The body is light and tea-like, making it an incredibly refreshing brew.",
-      profile: "Jasmine, Lemon, Bergamot, Tea-like",
-      elevation: "1,800 - 2,200m",
-      score: "89+",
-      image: yirgachafenatural,
-      tag: "Floral & Bright",
-    },
-    {
-      id: 2,
-      region: "Yirgacheffe",
-      type: "Natural Process",
-      short_desc:
-        "A natural fruit bomb bursting with intense blueberry notes. The process creates a heavy body with distinct floral undertones.",
-      long_desc:
-        "Dried with the cherry attached, this Natural Yirgacheffe imparts a wild, wine-like sweetness. Famous for its distinct blueberry note, it is often called a 'fruit bomb' with a syrupy texture coating the palate. Flavors of ripe strawberry and candied lemon shine through, all while maintaining signature floral aromatics.",
-      profile: "Blueberry, Strawberry, Candied Lemon, Floral",
-      elevation: "1,800 - 2,200m",
-      score: "90+",
-      image: yirgachafeWashed,
-      tag: "Fruity & Candied",
-    },
-
-    // --- Sidama ---
-    {
-      id: 3,
-      region: "Sidama",
-      type: "Natural Process",
-      short_desc:
-        "Offers profound sweetness and earthy complexity from diverse landscapes. Ripe stone fruit tones are supported by a velvety mouthfeel.",
-      long_desc:
-        "Sidama is the birthplace of coffee, and this Natural bean honors that heritage with deep, complex flavors. Sun-dried on raised beds, the beans absorb the cherry's sweetness, creating a profile of ripe berries and stone fruit. Notes of apricot jam and red wine are balanced by a full body that excels in every brew.",
-      profile: "Strawberry, Blueberry, Floral, Honey",
-      elevation: "1,500 - 2,200m",
-      score: "87+",
-      image: sidamaImage,
-      tag: "Fruity & Sweet",
-    },
-    {
-      id: 4,
-      region: "Sidama",
-      type: "Washed Process",
-      short_desc:
-        "A prime example of elegance with bright citric acidity. It presents a harmonious balance of lemon, bergamot, and tea-like spice.",
-      long_desc:
-        "This Washed Sidama shines with a clarity that highlights the region's unique terroir. The washing process allows intrinsic citrus and herbal flavors to come forward, supported by cane sugar sweetness. Notes of lime, tangerine, and fresh herbs create a sophisticated cup that offers equal parts complexity and drinkability.",
-      profile: "Bergamot, Stone Fruit, Lemon, Herbal",
-      elevation: "1,600 - 2,100m",
-      score: "88+",
-      image: sidamaWashed,
-      tag: "Elegant & Citrusy",
-    },
-
-    // --- Guji ---
-    {
-      id: 5,
-      region: "Guji",
-      type: "Natural Process",
-      short_desc:
-        "Explosively sweet and jammy from rich volcanic soils. Delivers tropical fruit flavors from mango to passion fruit with deep berry notes.",
-      long_desc:
-        "Guji Natural is a testament to the region's rich volcanic soil and dense forests. The cup is incredibly sweet, likened to fruit compote, with prominent notes of blackberry and tropical fruits. It has a luscious, syrup-like mouthfeel that lingers long after each sip, with hints of dark chocolate adding depth.",
-      profile: "Peach, Orange, Honey, Floral",
-      elevation: "1,800 - 2,300m",
-      score: "90+",
-      image: gujiNatural,
-      tag: "Exotic & Jammy",
-    },
-    {
-      id: 6,
-      region: "Guji",
-      type: "Washed Process",
-      short_desc:
-        "Defined by pristine clarity, offering delicate peach and lemon notes. The refined, sparkling acidity elevates the overall sweetness.",
-      long_desc:
-        "Meticulous processing reveals a coffee of exceptional structure and elegance in this Washed Guji. The clean cup showcases notes of white peach, nectarine, and honeysuckle. Its refined, sparkling acidity dances on the tongue like champagne. The finish is long and sweet with a tea-like quality.",
-      profile: "Lemon, Peach, Jasmine, Black Tea",
-      elevation: "1,900 - 2,200m",
-      score: "88+",
-      image: gujiImage,
-      tag: "Bright & Floral",
-    },
-
-
-    // --- Other Regions ---
-    {
-      id: 8,
-      region: "Limu",
-      type: "Washed Process",
-      short_desc:
-        "Known for spicy notes of sweet spice and brown sugar. The body is round and smooth, offering a milder, balanced alternative.",
-      long_desc:
-        "Hailing from western Ethiopia, Limu is famous for its balanced and rounded cup. This washed lot brings out a signature spiciness, reminiscent of cinnamon, paired with wine-like acidity. It is smoother and less aggressive than southern beans, notes of brown sugar and mild tangerine make it excellent for everyday drinking.",
-      profile: "Sweet Spice, Citrus, Brown Sugar",
-      elevation: "1,100 - 1,900m",
-      score: "86+",
-      image: limuWashed,
-      tag: "Spicy & Balanced",
-    },
-    {
-      id: 9,
-      region: "Harrar",
-      type: "Dry Process",
-      short_desc:
-        "Legendary and wild, known for heavy body and mocha notes. Expect bold dark cocoa, dried fruits, and a distinct blueberry finish.",
-      long_desc:
-        "Grown in the eastern highlands, Harrar is naturally dry-processed in an arid climate for a 'wild' profile. It is famous for its distinct mocha flavor, combining heavy chocolate and blueberry notes. The cup is full-bodied with hints of leather, dried spices, and figs, offering a historic and rustic intensity.",
-      profile: "Blueberry, Cocoa, Dried Fruit, Spice",
-      elevation: "1,400 - 2,000m",
-      score: "85+",
-      image: harrarImage,
-      tag: "Bold & Wild",
-    },
-  ];
+  const coffeeProducts = products;
 
   return (
     <div className="Playfair Display relative min-h-screen bg-[#FDFCF8] dark:bg-[#0a0a0a] text-gray-900 dark:text-white selection:bg-red-500/30 overflow-hidden">

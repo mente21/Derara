@@ -3,9 +3,9 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const operationRoutes = require('./routes/operationRoutes');
+const webhookRoutes = require('./routes/webhooks');
 
 // Load environment variables
 dotenv.config();
@@ -14,15 +14,19 @@ dotenv.config();
 connectDB();
 
 const app = express();
+// Force restart
 
 // Middleware
 app.use(cors({
   origin: '*', // Allow all origins for local testing
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'svix-id', 'svix-signature', 'svix-timestamp']
 }));
 
-app.use(express.json()); // Body parser
+// Routes that need raw body (Webhooks)
+app.use('/api/webhooks', webhookRoutes);
+
+app.use(express.json()); // Body parser for all other routes
 
 // Request Logger
 app.use((req, res, next) => {
@@ -32,19 +36,18 @@ app.use((req, res, next) => {
 
 // app.use(helmet()); // Security headers (Commented out for local debug)
 
-// Routes
-app.use('/api/auth', authRoutes);
+// Protected Routes
 app.use('/api/users', userRoutes);
 app.use('/api/ops', operationRoutes);
 
 // Test Route
 app.get('/api/test', (req, res) => {
-  res.json({ message: 'Backend is reachable!' });
+  res.json({ message: 'Backend is reachable with Clerk integration!' });
 });
 
 // Basic route
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.send('Derara API is running with Clerk Auth...');
 });
 
 // 404 Handler (JSON)
@@ -56,4 +59,7 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  if (!process.env.CLERK_SECRET_KEY) {
+    console.warn('⚠️ WARNING: CLERK_SECRET_KEY is missing from environment variables!');
+  }
 });
