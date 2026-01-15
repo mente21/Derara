@@ -77,7 +77,7 @@ const About = () => {
         />
         <div className="absolute inset-0 bg-black opacity-30"></div>
 
-        <div className="relative z-10 max-w-4xl px-6">
+        <div className="relative z-10 max-w-4xl px-6 pt-24 md:pt-0">
           <h1 className="text-6xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-snug">
             Delivering the World’s Finest{" "}
             <span className="text-[#A37D5C]">Ethiopian Arabica</span> Coffee
@@ -103,6 +103,8 @@ const About = () => {
             Request a Quote
           </button>
         </div>
+        {/* Bottom Fade Transition */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-[#FDFCF8] dark:to-[#0a0a0a] z-20"></div>
       </section>
       
       {/* 🎯 Founder & Visionary Section - Elevated Style */}

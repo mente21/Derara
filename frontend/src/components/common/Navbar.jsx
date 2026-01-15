@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
 const navLinks = [
@@ -63,14 +64,21 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
 
       {/* Drawer Content */}
       <div
-        className={`relative w-[70%] max-w-[280px] h-full bg-gray-950 border-l border-white/10 shadow-2xl flex flex-col pt-0 pb-10 px-8 transition-transform duration-500 ease-out transform ${mobileOpen ? "translate-x-0" : "translate-x-full"
+        className={`relative w-[70%] max-w-[280px] h-full bg-white dark:bg-gray-950 border-l border-gray-200 dark:border-white/10 shadow-2xl flex flex-col pt-0 pb-10 px-8 transition-transform duration-500 ease-out transform ${mobileOpen ? "translate-x-0" : "translate-x-full"
           }`}
       >
-        {/* Mobile Drawer Header - Simplified */}
-        <div className="pt-24 pb-6 border-b border-white/5">
+        {/* Mobile Drawer Header */}
+        <div className="pt-24 pb-6 border-b border-gray-100 dark:border-white/5 flex items-center justify-between">
           <span className="text-[10px] font-black text-red-500 tracking-[0.5em] uppercase">
             Navigation
           </span>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="p-2 -mr-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-500 transition-colors"
+            aria-label="Close menu"
+          >
+            <X size={24} />
+          </button>
         </div>
 
         {/* Links List */}
@@ -83,19 +91,19 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
                 to={link.path}
                 onClick={() => setMobileOpen(false)}
                 style={{ transitionDelay: `${index * 50}ms` }}
-                className={`group flex items-center justify-between text-lg font-bold uppercase tracking-wider border-b border-white/5 pb-3 transition-all duration-300 ${mobileOpen
+                className={`group flex items-center justify-between text-lg font-bold uppercase tracking-wider border-b border-gray-100 dark:border-white/5 pb-3 transition-all duration-300 ${mobileOpen
                   ? "translate-x-0 opacity-100"
                   : "translate-x-10 opacity-0"
                   } ${isActive
-                    ? "text-red-500 border-red-500/50"
-                    : "text-white/70 hover:text-white hover:border-white/30"
+                    ? "text-red-600 dark:text-red-500 border-red-100 dark:border-red-500/50"
+                    : "text-gray-600 dark:text-white/70 hover:text-red-600 dark:hover:text-white hover:border-red-100 dark:hover:border-white/30"
                   }`}
               >
                 <span>{link.name}</span>
                 <span
                   className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${isActive
-                    ? "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                    : "bg-transparent group-hover:bg-red-500"
+                    ? "bg-red-600 dark:bg-red-500 shadow-[0_0_8px_rgba(220,38,38,0.8)]"
+                    : "bg-transparent group-hover:bg-red-600 dark:group-hover:bg-red-500"
                     }`}
                 ></span>
               </Link>
@@ -104,8 +112,8 @@ const Navbar = ({ mobileOpen, setMobileOpen }) => {
         </div>
 
         {/* Mobile Footer Area */}
-        <div className="pt-6 border-t border-white/5 mt-auto">
-          <p className="text-[10px] text-center text-gray-500 uppercase tracking-widest font-bold">
+        <div className="pt-6 border-t border-gray-100 dark:border-white/5 mt-auto">
+          <p className="text-[10px] text-center text-gray-400 dark:text-gray-500 uppercase tracking-widest font-bold">
             Derara © {new Date().getFullYear()}
           </p>
         </div>

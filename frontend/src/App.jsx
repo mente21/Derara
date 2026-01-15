@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, Routes, Route } from "react-router-dom";
+import { useLocation, Routes, Route, useNavigate } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
@@ -25,10 +25,15 @@ const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const App = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isDashboard = location.pathname.includes("dashboard");
 
   return (
-    <ClerkProvider publishableKey={clerkPubKey} afterSignOutUrl="/">
+    <ClerkProvider 
+      publishableKey={clerkPubKey} 
+      afterSignOutUrl="/"
+      navigate={(to) => navigate(to)}
+    >
       <ThemeProvider>
         <AuthProvider>
           <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300">

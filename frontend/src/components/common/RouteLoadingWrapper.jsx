@@ -9,17 +9,23 @@ import ProfessionalLoader from "./ProfessionalLoader";
 const RouteLoadingWrapper = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
+  const [prevPath, setPrevPath] = useState(location.pathname);
 
   useEffect(() => {
-    // Show loader when route changes
-    setIsLoading(true);
+    const isAuthSwitch = 
+      (prevPath.includes('/login') && location.pathname.includes('/sign-up')) ||
+      (prevPath.includes('/sign-up') && location.pathname.includes('/login'));
 
-    // Hide loader after a short delay to show the animation
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 600); // Adjust timing as needed
-
-    return () => clearTimeout(timer);
+    if (!isAuthSwitch) {
+      // Show loader only if NOT switching between auth pages
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+    
+    setPrevPath(location.pathname);
   }, [location.pathname]);
 
   return (
