@@ -12,6 +12,7 @@ import Footer from "./components/common/Footer";
 import AboutPage from "./pages/About/About";
 import Products from "./pages/products/Products";
 import RouteLoadingWrapper from "./components/common/RouteLoadingWrapper";
+import FloatingContact from "./components/common/FloatingContact";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -77,6 +78,7 @@ const App = () => {
               </RouteLoadingWrapper>
             </main>
             {!isDashboard && <Footer />}
+            <FloatingContact />
           </div>
         </AuthProvider>
       </ThemeProvider>
