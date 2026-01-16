@@ -81,11 +81,9 @@ const Productroll = () => {
   const scrollRef = React.useRef(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  const shouldScroll = products.length > 3;
-
   useEffect(() => {
     const scrollContainer = scrollRef.current;
-    if (!scrollContainer || !shouldScroll) return;
+    if (!scrollContainer) return;
 
     let animationFrameId;
 
@@ -103,7 +101,7 @@ const Productroll = () => {
     animationFrameId = requestAnimationFrame(scroll);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isPaused, products, shouldScroll]); // Re-run if products change size or paused state changes
+  }, [isPaused, products]); // Re-run if products change size or paused state changes
 
   if (loading || (products.length === 0)) return null;
 
@@ -146,7 +144,7 @@ const Productroll = () => {
       </div>
 
       <div 
-        className={`w-full overflow-x-auto mask-linear-gradient-wide scrollbar-hide ${!shouldScroll ? 'flex justify-center' : ''}`}
+        className="w-full overflow-x-auto mask-linear-gradient-wide scrollbar-hide"
         ref={scrollRef}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -158,9 +156,12 @@ const Productroll = () => {
           {products.map((product) => (
             <ProductCard key={product._id || product.id} product={product} />
           ))}
-          {/* Only duplicate list for infinite scroll seamlessness if more than 3 items */}
-          {shouldScroll && products.map((product) => (
+          {/* Duplicate list for infinite scroll seamlessness */}
+          {products.map((product) => (
             <ProductCard key={`${(product._id || product.id)}-dup1`} product={product} />
+          ))}
+          {products.map((product) => (
+            <ProductCard key={`${(product._id || product.id)}-dup2`} product={product} />
           ))}
         </div>
       </div>

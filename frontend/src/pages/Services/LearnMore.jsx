@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import ethiopianFarmerImg from "../../assets/ethiopian-farmer.jpg";
@@ -209,14 +209,62 @@ export default function LearnMore() {
     const navigate = useNavigate();
     const { scrollYProgress } = useScroll();
     const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+    const [dynamicServices, setDynamicServices] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const service = servicesData.find(s => s.slug === serviceSlug);
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/services`);
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    const formattedData = data.map((item, index) => {
+                        // Standardize slug generation for comparison
+                        const dynamicSlug = item.slug || item.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-').replace(/[^\w-]/g, '');
+                        
+                        return {
+                            ...item,
+                            slug: dynamicSlug,
+                            id: index + 1,
+                            tagline: item.features ? item.features.split(',')[0] : "Premium Service",
+                            features: item.features ? item.features.split(',').map(f => f.trim()) : ["Premium Quality"],
+                        };
+                    });
+                    setDynamicServices(formattedData);
+                }
+            } catch (error) {
+                console.error("Failed to fetch services", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchServices();
+    }, []);
+
+    // Help normalize slugs for comparison (remove special chars, spaces to dashes)
+    const normalizeSlug = (s) => s ? s.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-').replace(/[^\w-]/g, '').replace(/-+/g, '-') : '';
+
+    // Standardize the incoming param before searching
+    const targetSlug = normalizeSlug(serviceSlug);
+
+    // Try to find in dynamic services first, then fall back to static data
+    const service = dynamicServices.find(s => normalizeSlug(s.slug) === targetSlug || normalizeSlug(s.title) === targetSlug) || 
+                    servicesData.find(s => normalizeSlug(s.slug) === targetSlug || normalizeSlug(s.title) === targetSlug);
+
+    if (loading && !service) {
+        return (
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+            </div>
+        );
+    }
 
     if (!service) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-4xl font-black text-black mb-4">Service Not Found</h1>
+                    <p className="mb-8 text-gray-500">Could not find service: {serviceSlug}</p>
                     <button
                         onClick={() => navigate('/services')}
                         className="px-6 py-3 bg-black text-[#FFC436] font-bold rounded-full hover:scale-105 transition-transform"
@@ -228,7 +276,10 @@ export default function LearnMore() {
         );
     }
 
-    const { detailedContent } = service;
+    // Default detailed content if missing from DB
+    const detailedContent = service.detailedContent || (
+        servicesData.find(s => normalizeSlug(s.title) === normalizeSlug(service.title))?.detailedContent || servicesData[0].detailedContent
+    );
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-white pb-20 font-sans selection:bg-[#D62828] selection:text-white">

@@ -111,7 +111,7 @@ const Products = () => {
                 {/* Header */}
                 <div className="mb-4">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-[family-name:var(--font-playfair)]">
-                    {product.region} {product.type?.split(" ")[0] || ""}
+                    {product.region} {product.type.split(" ")[0]}
                   </h2>
                   <p className="text-gray-500 dark:text-gray-400 text-sm font-medium mt-1">
                     {product.region}
@@ -125,14 +125,14 @@ const Products = () => {
 
                 {/* Flavor Profile Pills */}
                 <div className="mt-auto flex flex-wrap gap-2 mb-6">
-                  {product.profile?.split(", ").map((flavor, i) => (
+                  {product.profile.split(", ").map((flavor, i) => (
                     <span
                       key={i}
                       className="px-3 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full"
                     >
                       {flavor}
                     </span>
-                  )) || null}
+                  ))}
                 </div>
 
                 {/* Request Button */}
@@ -420,7 +420,7 @@ const Products = () => {
                         <textarea
                           required
                           rows="4"
-                          defaultValue={`I'm interested in receiving a sample of the ${selectedProduct.region} ${selectedProduct.type || ""}.`}
+                          defaultValue={`I'm interested in receiving a sample of the ${selectedProduct.region} ${selectedProduct.type}.`}
                           className="w-full px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-[#1B4D3E]/50 outline-none transition-all resize-none h-full min-h-[120px]"
                         ></textarea>
                       </div>

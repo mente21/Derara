@@ -47,45 +47,41 @@ const Certifications = () => {
   const [certPaused, setCertPaused] = useState(false);
   const [testPaused, setTestPaused] = useState(false);
 
-  // Helper to determine if we should scroll and duplicate
-  const shouldScrollCerts = certificates.length > 1;
-  const shouldScrollTestimonials = testimonials.length > 2;
-
   useEffect(() => {
-    const scrollContainer = certScrollRef.current;
-    if (!scrollContainer || !shouldScrollCerts) return;
-    let animationFrameId;
-    const scroll = () => {
-      if (!certPaused) {
-        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
-          scrollContainer.scrollLeft = 0;
-        } else {
-          scrollContainer.scrollLeft += 0.8;
+      const scrollContainer = certScrollRef.current;
+      if (!scrollContainer) return;
+      let animationFrameId;
+      const scroll = () => {
+        if (!certPaused) {
+          if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+             scrollContainer.scrollLeft = 0; 
+          } else {
+             scrollContainer.scrollLeft += 0.8; 
+          }
         }
-      }
+        animationFrameId = requestAnimationFrame(scroll);
+      };
       animationFrameId = requestAnimationFrame(scroll);
-    };
-    animationFrameId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [certPaused, certificates, shouldScrollCerts]);
+      return () => cancelAnimationFrame(animationFrameId);
+  }, [certPaused, certificates]);
 
   useEffect(() => {
     const scrollContainer = testScrollRef.current;
-    if (!scrollContainer || !shouldScrollTestimonials) return;
+    if (!scrollContainer) return;
     let animationFrameId;
     const scroll = () => {
       if (!testPaused) {
         if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
-          scrollContainer.scrollLeft = 0;
+           scrollContainer.scrollLeft = 0; 
         } else {
-          scrollContainer.scrollLeft += 0.8;
+           scrollContainer.scrollLeft += 0.8; 
         }
       }
       animationFrameId = requestAnimationFrame(scroll);
     };
     animationFrameId = requestAnimationFrame(scroll);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [testPaused, testimonials, shouldScrollTestimonials]);
+}, [testPaused, testimonials]);
 
   if (loading || (certificates.length === 0 && testimonials.length === 0)) return null;
 
@@ -106,8 +102,8 @@ const Certifications = () => {
             </p>
           </div>
 
-          <div
-            className={`flex w-full overflow-x-auto mask-linear-gradient scrollbar-hide ${!shouldScrollCerts ? 'justify-center' : ''}`}
+          <div 
+            className="flex w-full overflow-x-auto mask-linear-gradient scrollbar-hide"
             ref={certScrollRef}
             onMouseEnter={() => setCertPaused(true)}
             onMouseLeave={() => setCertPaused(false)}
@@ -115,30 +111,42 @@ const Certifications = () => {
             onTouchEnd={() => setCertPaused(false)}
           >
             <div className="flex py-4 space-x-10 px-5 w-max">
-              {/* Original */}
-              {certificates.map((cert) => (
-                <div key={`${cert._id}-1`} className="group relative bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0">
-                  <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src={cert.image} alt={cert.title} className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
-                  </div>
-                  <div className="mt-6 text-center">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 transition-colors whitespace-normal">{cert.title}</h3>
-                    <p className="text-gray-700 dark:text-gray-400 text-sm whitespace-normal">{cert.description}</p>
-                  </div>
-                </div>
-              ))}
-              {/* Only duplicate for infinite scroll if more than 1 item */}
-              {shouldScrollCerts && certificates.map((cert) => (
-                <div key={`${cert._id}-2`} className="group relative bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0">
-                  <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src={cert.image} alt={cert.title} className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
-                  </div>
-                  <div className="mt-6 text-center">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 transition-colors whitespace-normal">{cert.title}</h3>
-                    <p className="text-gray-700 dark:text-gray-400 text-sm whitespace-normal">{cert.description}</p>
-                  </div>
-                </div>
-              ))}
+                  {/* Original */}
+                  {certificates.map((cert) => (
+                    <div key={`${cert._id}-1`} className="group relative bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0">
+                      <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
+                        <img src={cert.image} alt={cert.title} className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
+                      </div>
+                      <div className="mt-6 text-center">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 transition-colors whitespace-normal">{cert.title}</h3>
+                        <p className="text-gray-700 dark:text-gray-400 text-sm whitespace-normal">{cert.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                  {/* Dup 1 */}
+                  {certificates.map((cert) => (
+                    <div key={`${cert._id}-2`} className="group relative bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0">
+                      <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
+                        <img src={cert.image} alt={cert.title} className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
+                      </div>
+                      <div className="mt-6 text-center">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 transition-colors whitespace-normal">{cert.title}</h3>
+                        <p className="text-gray-700 dark:text-gray-400 text-sm whitespace-normal">{cert.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                   {/* Dup 2 */}
+                   {certificates.map((cert) => (
+                    <div key={`${cert._id}-3`} className="group relative bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl p-4 transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30 w-[400px] md:w-[500px] flex-shrink-0">
+                      <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
+                        <img src={cert.image} alt={cert.title} className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
+                      </div>
+                      <div className="mt-6 text-center">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 transition-colors whitespace-normal">{cert.title}</h3>
+                        <p className="text-gray-700 dark:text-gray-400 text-sm whitespace-normal">{cert.description}</p>
+                      </div>
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
@@ -168,63 +176,86 @@ const Certifications = () => {
             `}
           </style>
 
-          <div
-            className={`flex w-full overflow-x-auto mask-linear-gradient scrollbar-hide ${!shouldScrollTestimonials ? 'justify-center' : ''}`}
-            ref={testScrollRef}
-            onMouseEnter={() => setTestPaused(true)}
-            onMouseLeave={() => setTestPaused(false)}
-            onTouchStart={() => setTestPaused(true)}
-            onTouchEnd={() => setTestPaused(false)}
-          >
+          <div 
+             className="flex w-full overflow-x-auto mask-linear-gradient scrollbar-hide"
+             ref={testScrollRef}
+             onMouseEnter={() => setTestPaused(true)}
+             onMouseLeave={() => setTestPaused(false)}
+             onTouchStart={() => setTestPaused(true)}
+             onTouchEnd={() => setTestPaused(false)}
+            >
             <div className="flex py-4 space-x-8 px-5 w-max">
-              {testimonials.map((testimonial) => (
-                <div
-                  key={`${testimonial._id}-1`}
-                  className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal shadow-sm flex-shrink-0"
-                >
-                  <p className="text-gray-700 dark:text-gray-300 italic font-medium">"{testimonial.feedback}"</p>
-                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-200 dark:border-white/10">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
-                    />
-                    <div>
-                      <h4 className="text-gray-900 dark:text-white font-bold text-sm">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-gray-600 dark:text-gray-500 text-xs">
-                        {testimonial.role}, {testimonial.company}
-                      </p>
+                  {testimonials.map((testimonial) => (
+                     <div
+                      key={`${testimonial._id}-1`}
+                      className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal shadow-sm flex-shrink-0"
+                    >
+                      <p className="text-gray-700 dark:text-gray-300 italic font-medium">"{testimonial.feedback}"</p>
+                      <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-200 dark:border-white/10">
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
+                        />
+                        <div>
+                          <h4 className="text-gray-900 dark:text-white font-bold text-sm">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-gray-600 dark:text-gray-500 text-xs">
+                            {testimonial.role}, {testimonial.company}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))}
 
-              {/* Only duplicate for infinite scroll if there are enough testimonials */}
-              {shouldScrollTestimonials && testimonials.map((testimonial) => (
-                <div
-                  key={`${testimonial._id}-2`}
-                  className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal shadow-sm flex-shrink-0"
-                >
-                  <p className="text-gray-700 dark:text-gray-300 italic font-medium">"{testimonial.feedback}"</p>
-                  <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-200 dark:border-white/10">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
-                    />
-                    <div>
-                      <h4 className="text-gray-900 dark:text-white font-bold text-sm">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-gray-600 dark:text-gray-500 text-xs">
-                        {testimonial.role}, {testimonial.company}
-                      </p>
+                  {testimonials.map((testimonial) => (
+                     <div
+                      key={`${testimonial._id}-2`}
+                      className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal shadow-sm flex-shrink-0"
+                    >
+                      <p className="text-gray-700 dark:text-gray-300 italic font-medium">"{testimonial.feedback}"</p>
+                      <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-200 dark:border-white/10">
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
+                        />
+                        <div>
+                          <h4 className="text-gray-900 dark:text-white font-bold text-sm">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-gray-600 dark:text-gray-500 text-xs">
+                            {testimonial.role}, {testimonial.company}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))}
+
+                  {testimonials.map((testimonial) => (
+                     <div
+                      key={`${testimonial._id}-3`}
+                      className="w-[350px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 p-6 rounded-2xl flex flex-col space-y-4 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-normal shadow-sm flex-shrink-0"
+                    >
+                      <p className="text-gray-700 dark:text-gray-300 italic font-medium">"{testimonial.feedback}"</p>
+                      <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-200 dark:border-white/10">
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-red-500/50"
+                        />
+                        <div>
+                          <h4 className="text-gray-900 dark:text-white font-bold text-sm">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-gray-600 dark:text-gray-500 text-xs">
+                            {testimonial.role}, {testimonial.company}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
