@@ -80,23 +80,23 @@ const About = () => {
       </div>
 
       {/* ☕ Hero Section - ALWAYS VISIBLE */}
-      <section className="relative w-full h-[85vh] flex items-center justify-center text-center overflow-hidden">
+      <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden">
         {/* Background Image with a rich overlay */}
         <img
           src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1920&q=80"
           alt="Ethiopian Coffee Highlands"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
 
-        <div className="relative z-10 max-w-5xl px-4 pt-32 md:pt-36 mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight leading-snug">
+        <div className="relative z-10 max-w-5xl px-4 pt-48 pb-20 mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl lg:text-8xl font-black mb-10 tracking-tight leading-[1.1]">
             <span className="text-white drop-shadow-lg">Delivering</span> <span className="text-white/90 drop-shadow-lg">The World’s Finest</span>
-            <br className="block md:hidden" />
-            <span className="block mt-2 text-[#A37D5C]">Ethiopian Arabica</span>
+            <br className="hidden lg:block" />
+            <span className="block mt-4 text-[#A37D5C]">Ethiopian Arabica</span>
             <span className="text-white drop-shadow-lg"> Coffee</span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 font-bold mb-8 max-w-2xl mx-auto shadow-black/20 text-shadow-sm">
+          <p className="text-lg md:text-2xl text-white/80 font-medium mb-12 max-w-3xl mx-auto drop-shadow-md">
             From the birthplace of coffee to global markets — rooted in
             heritage, crafted with precision.
           </p>
@@ -112,7 +112,7 @@ const About = () => {
                 });
               }
             }}
-            className="inline-block mt-4 bg-[#2D543F]  text-white text-lg font-semibold px-12 py-4 rounded-full shadow-2xl transition duration-300 ease-in-out hover:bg-[#A37D5C] transform hover:scale-105"
+            className="inline-block bg-[#2D543F] text-white text-lg font-bold px-14 py-5 rounded-full shadow-2xl transition duration-300 ease-in-out hover:bg-[#A37D5C] transform hover:scale-105 active:scale-95"
           >
             Request a Quote
           </button>

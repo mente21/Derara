@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Calendar, Award, TrendingUp, Users, Flag } from "lucide-react";
-import localFarmers from "./images/local-farmers.png";
+import localFarmers from "./images/localfarmers.png";
 import excellence from "./images/excellence.jpg";
 import globalVision from "./images/globalvision.png";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import carasol1 from "../../assets/carasol1.png";
 import carasol2 from "../../assets/carasol2.png";
 import carasol3 from "../../assets/carasol3.jpg";
-import carasol4 from "../../assets/carasol4.png";
+import carasol4 from "../../assets/carasol44.png";
 
 const Carousel = () => {
   const [current, setCurrent] = useState(0);
@@ -100,7 +100,7 @@ const Carousel = () => {
 
       {/* Slide 4 */}
       <div
-        className={`w-full h-[400px] absolute inset-0 transition-all duration-1000 ease-in-out
+        className={`absolute inset-0 transition-all duration-1000 ease-in-out
           ${current === 3 ? "opacity-100 scale-100" : "opacity-0 scale-105"}
         `}
       >
@@ -123,21 +123,22 @@ const Carousel = () => {
         </div>
       </div>
 
-      {/* Dots / Indicators */}
-      <div className="absolute bottom-6 left-0 right-0 flex justify-center space-x-3">
+      {/* Dots / Indicators - Higher z-index to stay above fade */}
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-3 z-30">
         {[0, 1, 2, 3].map((index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all 
-              ${current === index ? "bg-red-600 w-6" : "bg-white/60"}
+            className={`w-3 h-3 rounded-full transition-all duration-300
+              ${current === index ? "bg-red-600 scale-125" : "bg-white/60 hover:bg-white/90"}
             `}
+            aria-label={`Go to slide ${index + 1}`}
           ></button>
         ))}
       </div>
 
-      {/* Fade effect at bottom for smooth transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-black via-white/50 dark:via-black/50 to-transparent pointer-events-none z-10"></div>
+      {/* Extra Smooth Fade - No 'via' stops to prevent solid lines */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white dark:from-[#0a0a0a] to-transparent pointer-events-none z-20"></div>
     </div>
   );
 };
