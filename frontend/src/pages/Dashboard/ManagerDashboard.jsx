@@ -31,6 +31,7 @@ const ManagerDashboard = () => {
     const [socialLinks, setSocialLinks] = useState([{ platform: 'Facebook', url: '' }]);
     const [previews, setPreviews] = useState({});
     const [sliderImageFiles, setSliderImageFiles] = useState([]);
+    const [currentSliderLinks, setCurrentSliderLinks] = useState([]);
     
     // Request Management State
     const [selectedRequest, setSelectedRequest] = useState(null);
@@ -79,6 +80,7 @@ const ManagerDashboard = () => {
                 } else if (contentSubTab === 'about' && list.length > 0) {
                      // Auto-select first item for editing to enforce singleton feel
                      setEditingItem(list[0]);
+                     setCurrentSliderLinks(list[0].sliderImages || []);
                 }
             } else if (activeTab === 'tasks') {
                 const [tasksRes, usersRes] = await Promise.all([
@@ -134,16 +136,23 @@ const ManagerDashboard = () => {
         }
 
         // Handle multiple slider images for About section
-        if (contentSubTab === 'about' && sliderImageFiles.length > 0) {
-            try {
-                const uploadedUrls = await Promise.all(
-                    sliderImageFiles.map(file => uploadToCloudinary(file))
-                );
-                formData.set('sliderImages', JSON.stringify(uploadedUrls));
-            } catch (error) {
-                console.error("Slider images upload failed", error);
-                setMessage('Slider images upload failed');
-                return;
+        if (contentSubTab === 'about') {
+            const existing = currentSliderLinks; // Use the state that tracks removals
+            if (sliderImageFiles.length > 0) {
+                try {
+                    const uploadedUrls = await Promise.all(
+                        sliderImageFiles.map(file => uploadToCloudinary(file))
+                    );
+                    // MERGE existing (not removed) with new uploads
+                    formData.set('sliderImages', JSON.stringify([...existing, ...uploadedUrls]));
+                } catch (error) {
+                    console.error("Slider images upload failed", error);
+                    setMessage('Slider images upload failed');
+                    return;
+                }
+            } else {
+                // Save the remaining existing images
+                formData.set('sliderImages', JSON.stringify(existing));
             }
         }
 
@@ -460,24 +469,40 @@ const ManagerDashboard = () => {
                                                 <label className="text-xs font-bold text-gray-400 uppercase">Slider Images (Auto-rotate every 3 sec)</label>
                                                 <div className="relative group w-full min-h-32 bg-gray-50 dark:bg-gray-900/50 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center p-4 hover:border-red-500 transition-colors">
                                                     {sliderImageFiles.length > 0 || editingItem?.sliderImages?.length > 0 ? (
-                                                        <div className="w-full grid grid-cols-3 gap-2">
-                                                            {(sliderImageFiles.length > 0 ? sliderImageFiles : editingItem?.sliderImages || []).map((item, idx) => (
-                                                                <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
-                                                                    <img 
-                                                                        src={item instanceof File ? URL.createObjectURL(item) : item} 
-                                                                        className="w-full h-full object-cover" 
-                                                                        alt={`Slider ${idx + 1}`} 
-                                                                    />
+                                                        <div className="w-full grid grid-cols-3 gap-2 relative z-20 pointer-events-none">
+                                                            {/* Show Existing Images First */}
+                                                            {currentSliderLinks.map((url, idx) => (
+                                                                <div key={`exist-${idx}`} className="relative aspect-square rounded-lg overflow-hidden border border-amber-200 dark:border-amber-900 shadow-sm transition-all hover:scale-105 pointer-events-auto">
+                                                                    <img src={url} className="w-full h-full object-cover" alt="Server" />
+                                                                    <div className="absolute top-0.5 left-0.5 bg-amber-500 text-[8px] px-1 text-white font-bold rounded shadow-sm">Live</div>
                                                                     <button
                                                                         type="button"
-                                                                        onClick={() => {
-                                                                            if (sliderImageFiles.length > 0) {
-                                                                                setSliderImageFiles(prev => prev.filter((_, i) => i !== idx));
-                                                                            }
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            e.stopPropagation();
+                                                                            setCurrentSliderLinks(prev => prev.filter((_, i) => i !== idx));
                                                                         }}
-                                                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                                                                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1.5 hover:bg-red-700 shadow-lg transition-transform hover:scale-110 z-30 pointer-events-auto"
+                                                                        title="Remove existing image"
                                                                     >
-                                                                        <X size={12} />
+                                                                        <Trash2 size={14} />
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                            {/* Show Newly Selected Files */}
+                                                            {sliderImageFiles.map((file, idx) => (
+                                                                <div key={`new-${idx}`} className="relative aspect-square rounded-lg overflow-hidden border-2 border-dashed border-red-500 pointer-events-auto">
+                                                                    <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" alt="New" />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            e.stopPropagation();
+                                                                            setSliderImageFiles(prev => prev.filter((_, i) => i !== idx));
+                                                                        }}
+                                                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 shadow-md z-30 pointer-events-auto"
+                                                                    >
+                                                                        <X size={14} />
                                                                     </button>
                                                                 </div>
                                                             ))}
@@ -495,7 +520,7 @@ const ManagerDashboard = () => {
                                                         className="absolute inset-0 opacity-0 cursor-pointer z-10" 
                                                         onChange={(e) => {
                                                             if(e.target.files && e.target.files.length > 0) {
-                                                                setSliderImageFiles(Array.from(e.target.files));
+                                                                setSliderImageFiles(prev => [...prev, ...Array.from(e.target.files)]);
                                                             }
                                                         }}
                                                     />

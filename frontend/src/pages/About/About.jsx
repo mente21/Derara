@@ -31,12 +31,17 @@ const About = () => {
     fetchAboutData();
   }, []);
 
-  // Auto-rotate slider images every 3 seconds
+  // Auto-rotate all images (Main Portrait + Slider Gallery) every 3 seconds
   useEffect(() => {
-    if (aboutData?.sliderImages && aboutData.sliderImages.length > 0) {
+    const allImages = [
+      aboutData?.image,
+      ...(aboutData?.sliderImages || [])
+    ].filter(Boolean);
+
+    if (allImages.length > 1) {
       const interval = setInterval(() => {
         setCurrentSlideIndex((prevIndex) =>
-          (prevIndex + 1) % aboutData.sliderImages.length
+          (prevIndex + 1) % allImages.length
         );
       }, 3000);
 
@@ -148,40 +153,43 @@ const About = () => {
                     whileHover={{ rotateY: -5, rotateX: 5, scale: 1.02 }}
                     className="relative aspect-[4/5] max-w-sm lg:max-w-lg mx-auto rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(59,46,36,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] z-10 border-8 border-white dark:border-white/10"
                   >
-                    {/* Display slider images if available, otherwise show main image */}
-                    {displayData.sliderImages && displayData.sliderImages.length > 0 ? (
-                      <>
-                        {displayData.sliderImages.map((imgUrl, idx) => (
-                          <img
-                            key={idx}
-                            src={imgUrl}
-                            alt={`${displayData.name} - ${idx + 1}`}
-                            className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${idx === currentSlideIndex ? 'opacity-100' : 'opacity-0'
-                              }`}
-                          />
-                        ))}
-                        {/* Slider indicators */}
-                        <div className="absolute bottom-24 left-0 right-0 flex justify-center gap-2 z-20">
-                          {displayData.sliderImages.map((_, idx) => (
-                            <button
+                    {/* Combine main portrait and slider images for the rotation */}
+                    {(() => {
+                      const allImages = [
+                        displayData.image,
+                        ...(displayData.sliderImages || [])
+                      ].filter(Boolean);
+
+                      return allImages.length > 0 && (
+                        <>
+                          {allImages.map((imgUrl, idx) => (
+                            <img
                               key={idx}
-                              onClick={() => setCurrentSlideIndex(idx)}
-                              className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentSlideIndex
-                                  ? 'bg-white w-8'
-                                  : 'bg-white/50 hover:bg-white/75'
+                              src={imgUrl}
+                              alt={`${displayData.name} - ${idx + 1}`}
+                              className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${idx === currentSlideIndex ? 'opacity-100' : 'opacity-0'
                                 }`}
-                              aria-label={`Go to slide ${idx + 1}`}
                             />
                           ))}
-                        </div>
-                      </>
-                    ) : (
-                      <img
-                        src={displayData.image}
-                        alt={displayData.name}
-                        className="w-full h-full object-cover object-top transition-all duration-700"
-                      />
-                    )}
+                          {/* Slider indicators - only show if more than 1 image */}
+                          {allImages.length > 1 && (
+                            <div className="absolute bottom-24 left-0 right-0 flex justify-center gap-2 z-20">
+                              {allImages.map((_, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => setCurrentSlideIndex(idx)}
+                                  className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentSlideIndex
+                                    ? 'bg-white w-8'
+                                    : 'bg-white/50 hover:bg-white/75'
+                                    }`}
+                                  aria-label={`Go to slide ${idx + 1}`}
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
                     {/* Smooth Golden Overlay on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#3B2E24]/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
 
