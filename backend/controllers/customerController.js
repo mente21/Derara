@@ -6,6 +6,7 @@ const sendEmail = require('../utils/sendEmail'); // Import sendEmail utility
 // Create a new request/inquiry (Protected - for logged in users)
 exports.createRequest = async (req, res) => {
   const { type, subject, description, phone } = req.body;
+  console.log(`New request received: ${subject} from ${req.user?.clerkId}`);
   try {
     const request = await Request.create({
       user: req.user.clerkId, // Explicitly use Clerk ID
@@ -32,14 +33,22 @@ exports.createRequest = async (req, res) => {
       <p>Login to Dashboard to respond.</p>
     `;
 
+    // Send Email Notification to ALL Managers
     try {
-        await sendEmail({
-            email: process.env.EMAIL_USER, // Send to business owner
-            subject: `New Request: ${subject}`,
-            message,
-        });
+        const staff = await User.find({ role: 'manager' });
+        const staffEmails = staff.map(s => s.email);
+        
+        console.log("Notifying manager emails:", staffEmails);
+
+        if (staffEmails.length > 0) {
+            await sendEmail({
+                email: staffEmails.join(','),
+                subject: `New Request: ${subject}`,
+                message,
+            });
+        }
     } catch (emailError) {
-        console.error("Failed to send email notification:", emailError);
+        console.error("Failed to notify managers via email:", emailError);
     }
 
     res.status(201).json(request);
@@ -60,8 +69,36 @@ exports.getMyRequests = async (req, res) => {
 
 // Create a contact message (Public - for anyone on the contact page)
 exports.createContact = async (req, res) => {
+  const { name, email, subject, message: textMessage, phone } = req.body;
   try {
     const contact = await Contact.create(req.body);
+
+    // Send Email Notification to Admin/Manager
+    const htmlMessage = `
+      <h1>New Contact Message</h1>
+      <p><strong>From:</strong> ${name} (${email})</p>
+      <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+      <p><strong>Subject:</strong> ${subject}</p>
+      <p><strong>Message:</strong> ${textMessage}</p>
+      <hr/>
+      <p>Sent from Derara Public Contact Form</p>
+    `;
+
+    try {
+        const staff = await User.find({ role: 'manager' });
+        const staffEmails = staff.map(s => s.email);
+        
+        if (staffEmails.length > 0) {
+            await sendEmail({
+                email: staffEmails.join(','),
+                subject: `Contact Form: ${subject}`,
+                message: htmlMessage,
+            });
+        }
+    } catch (emailError) {
+        console.error("Failed to notify managers via email:", emailError);
+    }
+
     res.status(201).json(contact);
   } catch (error) {
     res.status(500).json({ message: error.message });

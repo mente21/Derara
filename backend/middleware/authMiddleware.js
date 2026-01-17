@@ -26,19 +26,28 @@ const protect = async (req, res, next) => {
             // Get user details from Clerk to get the role from publicMetadata
             const clerkUser = await getClerkClient().users.getUser(decoded.sub);
             
-            // Find user in MongoDB
-            const dbUser = await User.findOne({ clerkId: clerkUser.id });
+            // 1. Get role from Clerk (Source of Truth)
+            const clerkRole = clerkUser.publicMetadata?.role || 'customer';
+            
+            // 2. Find user in MongoDB
+            let dbUser = await User.findOne({ clerkId: clerkUser.id });
 
             if (dbUser) {
+                // Keep DB role in sync with Clerk role
+                if (dbUser.role !== clerkRole) {
+                    dbUser.role = clerkRole;
+                    await dbUser.save();
+                    console.log(`Synced DB role to ${clerkRole} for user ${dbUser.email}`);
+                }
                 req.user = dbUser;
             } else {
                 // Fallback for new users before webhook sync
                 req.user = {
-                    _id: clerkUser.id, // Be careful, this is a string
+                    _id: clerkUser.id,
                     clerkId: clerkUser.id,
                     name: clerkUser.firstName ? `${clerkUser.firstName} ${clerkUser.lastName || ''}`.trim() : clerkUser.username,
                     email: clerkUser.emailAddresses[0]?.emailAddress,
-                    role: clerkUser.publicMetadata?.role || 'customer'
+                    role: clerkRole
                 };
             }
 

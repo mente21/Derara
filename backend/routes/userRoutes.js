@@ -4,6 +4,8 @@ const {
   getUsers,
   updateUserRole,
   deleteUser,
+  syncAllUsers,
+  inviteUser,
 } = require('../controllers/userController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
@@ -12,6 +14,8 @@ router.use(protect);
 router.use(authorize('admin', 'manager'));
 
 router.get('/', getUsers);
+router.post('/sync', syncAllUsers);
+router.post('/invite', inviteUser);
 router.put('/:id/role', updateUserRole);
 router.delete('/:id', deleteUser);
 

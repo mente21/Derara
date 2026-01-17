@@ -37,6 +37,9 @@ const ManagerDashboard = () => {
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [responseNote, setResponseNote] = useState('');
 
+    const [lastRequestCount, setLastRequestCount] = useState(0);
+    const [newRequestCount, setNewRequestCount] = useState(0);
+
     useEffect(() => {
         setActiveTab(tabParam);
     }, [tabParam]);
@@ -46,6 +49,53 @@ const ManagerDashboard = () => {
         // Reset edit mode when tab changes
         setEditingItem(null); 
     }, [activeTab, contentSubTab]);
+
+    // Polling for new requests
+    useEffect(() => {
+        const pollInterval = setInterval(() => {
+            checkNewRequests();
+        }, 30000); // Check every 30 seconds
+
+        return () => clearInterval(pollInterval);
+    }, []);
+
+    const checkNewRequests = async () => {
+        try {
+            const token = await getToken();
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/requests/all`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                if (data.length > lastRequestCount && lastRequestCount !== 0) {
+                    setNewRequestCount(prev => prev + (data.length - lastRequestCount));
+                    // Optional: Browser Notification
+                    if (Notification.permission === "granted") {
+                        new Notification("New Customer Request", {
+                            body: `You have received ${data.length - lastRequestCount} new request(s).`,
+                            icon: "/favicon.ico"
+                        });
+                    }
+                }
+                setLastRequestCount(data.length);
+                if (activeTab === 'requests') {
+                    setRequests(data);
+                }
+            }
+        } catch (err) {
+            console.error("Polling error:", err);
+        }
+    };
+
+    const requestPermission = () => {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+    };
+
+    useEffect(() => {
+        requestPermission();
+    }, []);
 
     const fetchData = async () => {
         setLoading(true);
@@ -101,7 +151,10 @@ const ManagerDashboard = () => {
             } else if (activeTab === 'requests') {
                  const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/requests/all`, { headers });
                  const data = await res.json();
-                 setRequests(Array.isArray(data) ? data : []);
+                 const list = Array.isArray(data) ? data : [];
+                 setRequests(list);
+                 setLastRequestCount(list.length);
+                 setNewRequestCount(0); // Clear counter when viewing requests
             }
         } catch (err) {
             console.error(err);
@@ -372,6 +425,27 @@ const ManagerDashboard = () => {
                 </div>
 
                 {message && <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-2xl border border-green-200 dark:border-green-800 flex items-center gap-2 shadow-sm font-bold animate-fade-in"><CheckCircle size={20} /> {message}</div>}
+
+                {newRequestCount > 0 && activeTab !== 'requests' && (
+                    <div 
+                        onClick={() => {
+                            setActiveTab('requests');
+                            setNewRequestCount(0);
+                        }}
+                        className="mb-6 p-4 bg-red-600 text-white rounded-2xl border border-red-700 flex items-center justify-between gap-4 shadow-xl cursor-pointer hover:bg-red-700 transition-all animate-bounce"
+                    >
+                        <div className="flex items-center gap-3">
+                            <Mail size={24} />
+                            <div>
+                                <p className="font-black text-sm uppercase tracking-widest">New Requests Received!</p>
+                                <p className="text-xs opacity-90 font-bold">You have {newRequestCount} unread request(s). Click to view.</p>
+                            </div>
+                        </div>
+                        <div className="bg-white text-red-600 px-3 py-1 rounded-full text-xs font-black">
+                            VIEW
+                        </div>
+                    </div>
+                )}
 
                 {/* Main Content Area */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

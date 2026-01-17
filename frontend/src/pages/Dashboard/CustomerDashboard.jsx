@@ -49,8 +49,9 @@ const CustomerDashboard = () => {
             });
             if (res.ok) {
                 setMessage('Your request has been sent to the managers!');
-                setActiveView('history');
-                setTimeout(() => setMessage(''), 3000);
+                // Wait 3 seconds then clear message, stay on the current form
+                setTimeout(() => setMessage(''), 5000);
+                e.target.reset(); // Clear the form
             }
         } catch (err) { console.error(err); }
     };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useSearchParams } from 'react-router-dom';
-import { User, Shield, Users, Trash2, Edit, CheckCircle, Coffee, Briefcase, UserCheck } from 'lucide-react';
+import { User, Shield, Users, Trash2, Edit, CheckCircle, Coffee, Briefcase, UserCheck, Zap, Plus } from 'lucide-react';
 
 import DashboardLayout from '../../components/dashboard/DashboardLayout';
 
@@ -13,8 +13,12 @@ const AdminDashboard = () => {
     
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [syncing, setSyncing] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [newUser, setNewUser] = useState({ name: '', email: '', role: 'customer' });
 
     useEffect(() => {
         fetchUsers();
@@ -101,6 +105,60 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleSyncUsers = async () => {
+        try {
+            setSyncing(true);
+            const token = await getToken();
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/sync`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                setSuccessMessage('Database synced successfully with Clerk');
+                fetchUsers();
+                setTimeout(() => setSuccessMessage(''), 3000);
+            }
+        } catch (err) {
+            setError('Sync failed');
+        } finally {
+            setSyncing(false);
+        }
+    };
+
+    const handleAddUser = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const token = await getToken();
+            // In Clerk-based systems, we usually invite via email or create directly
+            // For now, let's assume we use a 'create' endpoint if you have one, 
+            // otherwise redirect to Clerk dashboard or use Clerk API to create
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/invite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newUser)
+            });
+
+            if (response.ok) {
+                setSuccessMessage(`Invitation sent to ${newUser.email}`);
+                setShowAddModal(false);
+                setNewUser({ name: '', email: '', role: 'customer' });
+                fetchUsers();
+            } else {
+                const data = await response.json();
+                setError(data.message || 'Failed to invite user');
+            }
+        } catch (err) {
+            setError('Connection error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const getRoleIcon = (role) => {
         switch (role) {
             case 'admin': return <Shield className="w-4 h-4 text-purple-500" />;
@@ -125,6 +183,23 @@ const AdminDashboard = () => {
                                 ? `Manage ${roleFilter} users and their permissions` 
                                 : 'Manage users, roles and system permissions for Derara Coffee'}
                         </p>
+                    </div>
+                    <div className="flex gap-4">
+                        <button 
+                            onClick={handleSyncUsers}
+                            disabled={syncing}
+                            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all border ${syncing ? 'bg-gray-100 text-gray-400 border-gray-200' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-white border-gray-200 dark:border-gray-700 hover:border-red-500'}`}
+                        >
+                            <Zap className={`w-4 h-4 ${syncing ? 'animate-spin' : 'text-yellow-500'}`} />
+                            {syncing ? 'Syncing...' : 'Sync Database'}
+                        </button>
+                        <button 
+                            onClick={() => setShowAddModal(true)}
+                            className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-1"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Invite User
+                        </button>
                     </div>
                 </div>
 
@@ -279,6 +354,74 @@ const AdminDashboard = () => {
                     </table>
                 </div>
             </div>
+
+            {/* Invite User Modal */}
+            {showAddModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white dark:bg-gray-800 w-full max-w-md rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden animate-scale-in">
+                        <div className="p-8 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+                            <h3 className="text-2xl font-bold dark:text-white flex items-center gap-2">
+                                <Plus className="text-red-500" /> Invite New Team Member
+                            </h3>
+                            <p className="text-gray-500 text-sm mt-1">Add a new user to the Derara ecosystem</p>
+                        </div>
+                        <form onSubmit={handleAddUser} className="p-8 space-y-6">
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Full Name</label>
+                                    <input 
+                                        type="text" 
+                                        required 
+                                        value={newUser.name}
+                                        onChange={(e) => setNewUser({...newUser, name: e.target.value})}
+                                        className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none transition-all" 
+                                        placeholder="Enter name..."
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Email Address</label>
+                                    <input 
+                                        type="email" 
+                                        required 
+                                        value={newUser.email}
+                                        onChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                                        className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none transition-all" 
+                                        placeholder="email@example.com"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Assign Initial Role</label>
+                                    <select 
+                                        value={newUser.role}
+                                        onChange={(e) => setNewUser({...newUser, role: e.target.value})}
+                                        className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none transition-all font-bold"
+                                    >
+                                        <option value="customer">Customer</option>
+                                        <option value="employee">Employee</option>
+                                        <option value="manager">Manager</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="flex gap-3 pt-4">
+                                <button 
+                                    type="button" 
+                                    onClick={() => setShowAddModal(false)}
+                                    className="flex-1 py-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    className="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-1"
+                                >
+                                    Send Invite
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
             </div>
         </DashboardLayout>
     );
