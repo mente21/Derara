@@ -1,35 +1,92 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Award, TrendingUp, Users, Flag } from "lucide-react";
 import localFarmers from "./images/localfarmers.png";
 import excellence from "./images/excellence.jpg";
 import globalVision from "./images/globalvision.png";
 
-// Mock Data for History
-const historyData = [
-  {
-    title: "Ethiopian Roots",
-    description:
-      "Born in the heart of Addis Ababa, Derara was founded with a singular mission: to honor Ethiopia's coffee heritage. We started by building direct relationships with local farmers to ensure every bean tells the story of its origin.",
-    icon: <Flag className="w-6 h-6 text-white" />,
-    image: localFarmers,
-  },
-  {
-    title: "Local Excellence",
-    description:
-      "By implementing sustainable export practices and innovative processing methods, we've set new benchmarks for quality in Ethiopia. Our foundation is built on empowering our community and perfecting our craft.",
-    icon: <Award className="w-6 h-6 text-white" />,
-    image: excellence,
-  },
-  {
-    title: "Global Vision",
-    description:
-      "Our journey is just beginning. With plans to establish presence in major global hubs like Dubai and London, we are committed to being the premier bridge between Ethiopian soil and the international stage.",
-    icon: <TrendingUp className="w-6 h-6 text-white" />,
-    image: globalVision,
-  },
-];
-
 const OurHistory = () => {
+  const [historyData, setHistoryData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Default fallback data
+  const defaultHistory = [
+    {
+      title: "Ethiopian Roots",
+      description: "Born in the heart of Addis Ababa, Derara was founded with a singular mission: to honor Ethiopia's coffee heritage. We started by building direct relationships with local farmers to ensure every bean tells the story of its origin.",
+      icon: "Flag",
+      image: "localfarmers.png",
+      order: 0
+    },
+    {
+      title: "Local Excellence",
+      description: "By implementing sustainable export practices and innovative processing methods, we've set new benchmarks for quality in Ethiopia. Our foundation is built on empowering our community and perfecting our craft.",
+      icon: "Award",
+      image: "excellence.jpg",
+      order: 1
+    },
+    {
+      title: "Global Vision",
+      description: "Our journey is just beginning. With plans to establish presence in major global hubs like Dubai and London, we are committed to being the premier bridge between Ethiopian soil and the international stage.",
+      icon: "TrendingUp",
+      image: "globalvision.png",
+      order: 2
+    }
+  ];
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/history`);
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          // Sort by order field
+          const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+          setHistoryData(sorted);
+        } else {
+          setHistoryData(defaultHistory);
+        }
+      } catch (error) {
+        console.error('Failed to fetch history:', error);
+        setHistoryData(defaultHistory);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  // Image mapping for local defaults vs uploaded URLs
+  const getDisplayImage = (img) => {
+    if (!img) return localFarmers;
+    if (img === 'localfarmers.png') return localFarmers;
+    if (img === 'excellence.jpg') return excellence;
+    if (img === 'globalvision.png') return globalVision;
+    return img; // Returns URL if it's an uploaded Cloudinary link
+  };
+
+  // Icon mapping - you can extend this based on your needs
+  const getIcon = (iconName) => {
+    const icons = {
+      'Flag': <Flag className="w-6 h-6 text-white" />,
+      'Award': <Award className="w-6 h-6 text-white" />,
+      'TrendingUp': <TrendingUp className="w-6 h-6 text-white" />,
+      'Users': <Users className="w-6 h-6 text-white" />,
+      'Calendar': <Calendar className="w-6 h-6 text-white" />,
+    };
+    return icons[iconName] || <Flag className="w-6 h-6 text-white" />;
+  };
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white relative overflow-hidden">
+        <div className="container mx-auto px-6 text-center">
+          <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-500 dark:text-gray-400 font-bold tracking-widest uppercase text-xs">Tracing our roots...</p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white relative overflow-hidden">
       {/* Background Ambience */}
@@ -74,8 +131,8 @@ const OurHistory = () => {
                   <div className="hidden md:block w-5/12 group mt-8">
                     <div className="overflow-hidden rounded-2xl border border-gray-300 dark:border-white/10 shadow-lg relative h-64 md:h-80">
                       <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
-                      <img
-                        src={item.image}
+                       <img
+                        src={getDisplayImage(item.image)}
                         alt={item.title}
                         className="w-full h-[400px] object-cover transform transition-transform duration-700  group-hover:scale-110"
                       />
@@ -84,7 +141,7 @@ const OurHistory = () => {
 
                   {/* Icon/Dot on the Center Line */}
                   <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.5)] z-20 border-4 border-white dark:border-gray-900">
-                    {item.icon}
+                    {getIcon(item.icon)}
                   </div>
 
                   {/* Content Card */}
@@ -93,7 +150,7 @@ const OurHistory = () => {
                       {/* Mobile Image (Visible only on mobile) */}
                       <div className="md:hidden w-full h-56 rounded-xl overflow-hidden mb-6 border border-gray-300 dark:border-white/10 mt-4">
                         <img
-                          src={item.image}
+                          src={getDisplayImage(item.image)}
                           alt={item.title}
                           className="w-full h-full object-cover"
                         />

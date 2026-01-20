@@ -16,6 +16,7 @@ router.get('/hero', managerCtrl.getHeroes);
 router.get('/features', managerCtrl.getFeatures);
 router.get('/about', managerCtrl.getAbouts);
 router.get('/contact-info', managerCtrl.getContactInfos);
+router.get('/history', managerCtrl.getHistory);
 
 router.post('/contacts', customerCtrl.createContact);
 
@@ -71,6 +72,11 @@ router.delete('/about/:id', protect, authorize(...roles), managerCtrl.deleteAbou
 router.post('/contact-info', protect, authorize(...roles), managerCtrl.createContactInfo);
 router.put('/contact-info/:id', protect, authorize(...roles), managerCtrl.updateContactInfo);
 router.delete('/contact-info/:id', protect, authorize(...roles), managerCtrl.deleteContactInfo);
+
+// History
+router.post('/history', protect, authorize(...roles), managerCtrl.createHistory);
+router.put('/history/:id', protect, authorize(...roles), managerCtrl.updateHistory);
+router.delete('/history/:id', protect, authorize(...roles), managerCtrl.deleteHistory);
 
 // --- MANAGER ROUTES: OPERATIONS ---
 router.post('/tasks', protect, authorize(...roles), managerCtrl.assignTask);

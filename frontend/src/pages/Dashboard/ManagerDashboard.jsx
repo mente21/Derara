@@ -112,6 +112,7 @@ const ManagerDashboard = () => {
                     blogs: 'blogs',
                     testimonials: 'testimonials',
                     certificates: 'certificates',
+                    history: 'history',
                     footer: 'contact-info'
                 };
                 const endpoint = endpointMap[contentSubTab];
@@ -241,6 +242,7 @@ const ManagerDashboard = () => {
                 blogs: 'blogs',
                 testimonials: 'testimonials',
                 certificates: 'certificates',
+                history: 'history',
                 footer: 'contact-info'
             };
             const endpoint = endpointMap[contentSubTab];
@@ -323,6 +325,7 @@ const ManagerDashboard = () => {
                 blogs: 'blogs',
                 testimonials: 'testimonials',
                 certificates: 'certificates',
+                history: 'history',
                 footer: 'contact-info'
             };
             const endpoint = endpointMap[contentSubTab];
@@ -377,6 +380,7 @@ const ManagerDashboard = () => {
         { id: 'blogs', label: 'Blogs', icon: BookOpen },
         { id: 'testimonials', label: 'Reviews', icon: Quote },
         { id: 'certificates', label: 'Certs', icon: Award },
+        { id: 'history', label: 'History', icon: Clock },
         { id: 'footer', label: 'Footer', icon: MapPin },
     ];
 
@@ -842,6 +846,50 @@ const ManagerDashboard = () => {
                                             <input name="description" defaultValue={editingItem?.description} placeholder="Issuing Body/Detail" className="w-full p-3.5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none text-sm" required />
                                             <div className="space-y-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase">Upload Certificate</label>
+                                                <div className="relative group w-full h-40 bg-gray-50 dark:bg-gray-900/50 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center overflow-hidden hover:border-red-500 transition-colors">
+                                                    {previews.image || editingItem?.image ? (
+                                                        <img src={previews.image || editingItem.image} className="absolute inset-0 w-full h-full object-cover" alt="Preview" />
+                                                    ) : (
+                                                        <div className="text-gray-400 flex flex-col items-center gap-1">
+                                                            <ImageIcon size={24} />
+                                                            <span className="text-[10px] uppercase font-bold">Select Image</span>
+                                                        </div>
+                                                    )}
+                                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                        <span className="text-white text-xs font-bold uppercase">Change Image</span>
+                                                    </div>
+                                                    <input 
+                                                        type="file" 
+                                                        name="image" 
+                                                        accept="image/*" 
+                                                        className="absolute inset-0 opacity-0 cursor-pointer z-10" 
+                                                        onChange={(e) => {
+                                                            if(e.target.files[0]) {
+                                                                setPreviews(prev => ({...prev, image: URL.createObjectURL(e.target.files[0])}))
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                                {editingItem?.image && !previews.image && <p className="text-[10px] text-gray-400 truncate text-center">Current: {editingItem.image.split('/').pop()}</p>}
+                                            </div>
+                                        </>
+                                    )}
+                                    {contentSubTab === 'history' && (
+                                        <>
+                                            <input name="title" defaultValue={editingItem?.title} placeholder="History Stage Title (e.g. Ethiopian Roots)" className="w-full p-3.5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none text-sm" required />
+                                            <textarea name="description" defaultValue={editingItem?.description} placeholder="History Story/Description" className="w-full p-3.5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none text-sm h-32" required />
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <select name="icon" defaultValue={editingItem?.icon || 'Flag'} className="w-full p-3.5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none text-sm">
+                                                    <option value="Flag">Flag (Roots)</option>
+                                                    <option value="Award">Award (Excellence)</option>
+                                                    <option value="TrendingUp">Trending Up (Vision)</option>
+                                                    <option value="Users">Users (Community)</option>
+                                                    <option value="Calendar">Calendar (Time)</option>
+                                                </select>
+                                                <input name="order" type="number" defaultValue={editingItem?.order || 0} placeholder="Display Order (0, 1, 2...)" className="w-full p-3.5 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-transparent focus:border-red-500 dark:text-white outline-none text-sm" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-bold text-gray-400 uppercase">Upload History Image</label>
                                                 <div className="relative group w-full h-40 bg-gray-50 dark:bg-gray-900/50 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center overflow-hidden hover:border-red-500 transition-colors">
                                                     {previews.image || editingItem?.image ? (
                                                         <img src={previews.image || editingItem.image} className="absolute inset-0 w-full h-full object-cover" alt="Preview" />

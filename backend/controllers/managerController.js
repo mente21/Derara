@@ -11,6 +11,7 @@ const Hero = require('../models/Hero');
 const Feature = require('../models/Feature');
 const About = require('../models/About');
 const ContactInfo = require('../models/ContactInfo');
+const History = require('../models/History');
 
 // Helper for generic CRUD
 const createItem = (Model) => async (req, res) => {
@@ -100,6 +101,12 @@ exports.createContactInfo = createItem(ContactInfo);
 exports.getContactInfos = getItems(ContactInfo);
 exports.updateContactInfo = updateItem(ContactInfo);
 exports.deleteContactInfo = deleteItem(ContactInfo);
+
+// --- History Management ---
+exports.createHistory = createItem(History);
+exports.getHistory = getItems(History);
+exports.updateHistory = updateItem(History);
+exports.deleteHistory = deleteItem(History);
 
 // --- Contact Inquiry Management ---
 exports.getAllContacts = async (req, res) => {

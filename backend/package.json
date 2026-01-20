@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "server": "node server.js",
+    "seed-history": "node scripts/seedHistory.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
