@@ -4,34 +4,34 @@ import localFarmers from "./images/localfarmers.png";
 import excellence from "./images/excellence.jpg";
 import globalVision from "./images/globalvision.png";
 
-const OurHistory = () => {
-  const [historyData, setHistoryData] = useState([]);
-  const [loading, setLoading] = useState(true);
+// Default fallback data moved outside to serve as initial state
+const defaultHistory = [
+  {
+    title: "Ethiopian Roots",
+    description: "Born in the heart of Addis Ababa, Derara was founded with a singular mission: to honor Ethiopia's coffee heritage. We started by building direct relationships with local farmers to ensure every bean tells the story of its origin.",
+    icon: "Flag",
+    image: "localfarmers.png",
+    order: 0
+  },
+  {
+    title: "Local Excellence",
+    description: "By implementing sustainable export practices and innovative processing methods, we've set new benchmarks for quality in Ethiopia. Our foundation is built on empowering our community and perfecting our craft.",
+    icon: "Award",
+    image: "excellence.jpg",
+    order: 1
+  },
+  {
+    title: "Global Vision",
+    description: "Our journey is just beginning. With plans to establish presence in major global hubs like Dubai and London, we are committed to being the premier bridge between Ethiopian soil and the international stage.",
+    icon: "TrendingUp",
+    image: "globalvision.png",
+    order: 2
+  }
+];
 
-  // Default fallback data
-  const defaultHistory = [
-    {
-      title: "Ethiopian Roots",
-      description: "Born in the heart of Addis Ababa, Derara was founded with a singular mission: to honor Ethiopia's coffee heritage. We started by building direct relationships with local farmers to ensure every bean tells the story of its origin.",
-      icon: "Flag",
-      image: "localfarmers.png",
-      order: 0
-    },
-    {
-      title: "Local Excellence",
-      description: "By implementing sustainable export practices and innovative processing methods, we've set new benchmarks for quality in Ethiopia. Our foundation is built on empowering our community and perfecting our craft.",
-      icon: "Award",
-      image: "excellence.jpg",
-      order: 1
-    },
-    {
-      title: "Global Vision",
-      description: "Our journey is just beginning. With plans to establish presence in major global hubs like Dubai and London, we are committed to being the premier bridge between Ethiopian soil and the international stage.",
-      icon: "TrendingUp",
-      image: "globalvision.png",
-      order: 2
-    }
-  ];
+const OurHistory = () => {
+  // Initialize with default data immediately for instant loading
+  const [historyData, setHistoryData] = useState(defaultHistory);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -42,14 +42,10 @@ const OurHistory = () => {
           // Sort by order field
           const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
           setHistoryData(sorted);
-        } else {
-          setHistoryData(defaultHistory);
         }
       } catch (error) {
-        console.error('Failed to fetch history:', error);
-        setHistoryData(defaultHistory);
-      } finally {
-        setLoading(false);
+        console.error('Failed to fetch history, using default data:', error);
+        // No need to setHistoryData(defaultHistory) as it's already the initial state
       }
     };
 
@@ -77,16 +73,6 @@ const OurHistory = () => {
     return icons[iconName] || <Flag className="w-6 h-6 text-white" />;
   };
 
-  if (loading) {
-    return (
-      <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white relative overflow-hidden">
-        <div className="container mx-auto px-6 text-center">
-          <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-500 dark:text-gray-400 font-bold tracking-widest uppercase text-xs">Tracing our roots...</p>
-        </div>
-      </section>
-    );
-  }
   return (
     <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white relative overflow-hidden">
       {/* Background Ambience */}
@@ -107,7 +93,7 @@ const OurHistory = () => {
               History
             </span>
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg font-outfit">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xl font-medium font-outfit">
             Founded in the heart of Ethiopia, we are on a mission to bring
             our rich heritage to every corner of the globe.
           </p>
@@ -159,7 +145,7 @@ const OurHistory = () => {
                       <h3 className="text-2xl font-playfair font-bold text-gray-900 dark:text-white mb-3">
                         {item.title}
                       </h3>
-                      <p className="text-gray-700 dark:text-gray-400 leading-relaxed text-sm lg:text-base font-outfit">
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base lg:text-lg font-medium font-outfit">
                         {item.description}
                       </p>
                     </div>
