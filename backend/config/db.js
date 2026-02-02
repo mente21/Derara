@@ -7,7 +7,7 @@ const connectDB = async () => {
     
     // Added options to handle SRV/DNS timeouts better
     const options = {
-      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+       // defaults
     };
 
     const conn = await mongoose.connect(process.env.MONGO_URI, options);
