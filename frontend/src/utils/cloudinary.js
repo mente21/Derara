@@ -21,7 +21,10 @@ export const uploadToCloudinary = async (file) => {
         }
 
         const data = await response.json();
-        return data.secure_url;
+        // Return URL with auto-optimization applied immediately
+        // This ensures all new uploads stored in DB are optimized by default
+        const optimizedUrl = data.secure_url.replace('/upload/', '/upload/f_auto,q_auto/');
+        return optimizedUrl;
     } catch (error) {
         console.error('Error uploading image:', error);
         throw error;

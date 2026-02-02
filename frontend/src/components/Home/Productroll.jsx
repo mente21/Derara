@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { optimizeImage } from "../../utils/imageOptimizer";
 
 const ProductCard = ({ product }) => (
   <div className="w-[300px] md:w-[320px] bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl overflow-hidden group hover:border-red-500/50 hover:shadow-2xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-500 flex-shrink-0 relative">
@@ -13,7 +14,7 @@ const ProductCard = ({ product }) => (
       )}
       <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-300 z-0" />
       <img
-        src={product.image}
+        src={optimizeImage(product.image, 400)}
         alt={product.name}
         className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
       />

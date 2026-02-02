@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Award, TrendingUp, Users, Flag } from "lucide-react";
+import { optimizeImage } from "../../utils/imageOptimizer";
 import localFarmers from "./images/localfarmers.png";
 import excellence from "./images/excellence.jpg";
 import globalVision from "./images/globalvision.png";
@@ -58,7 +59,9 @@ const OurHistory = () => {
     if (img === 'localfarmers.png') return localFarmers;
     if (img === 'excellence.jpg') return excellence;
     if (img === 'globalvision.png') return globalVision;
-    return img; // Returns URL if it's an uploaded Cloudinary link
+    
+    // Apply optimization for Cloudinary URLs
+    return optimizeImage(img, 800);
   };
 
   // Icon mapping - you can extend this based on your needs

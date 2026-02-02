@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import carasol1 from "../../assets/carasol1.png";
 import carasol2 from "../../assets/carasol2.png";
-import carasol3 from "../../assets/carasol3.jpg";
-import carasol4 from "../../assets/carasol44.png";
+import carasol3 from "../../assets/carasol3_opt.jpg";
+import carasol4 from "../../assets/carasol44_opt.jpg";
 
 const Carousel = () => {
   const [current, setCurrent] = useState(0);

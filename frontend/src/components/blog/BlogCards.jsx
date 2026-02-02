@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { blogPosts } from "../../assets/assets";
+import { optimizeImage } from "../../utils/imageOptimizer";
 
 const BlogCards = ({ blogs }) => {
     // Use API data if available, otherwise empty.
@@ -69,7 +70,7 @@ const BlogCards = ({ blogs }) => {
                                 <div className="shrink-0 relative rounded-xl overflow-hidden w-full sm:w-56 h-48">
                                     <img
                                         className="group-hover:scale-110 transition-transform duration-500 object-cover w-full h-full"
-                                        src={imgSrc}
+                                        src={optimizeImage(imgSrc, 500)}
                                         alt={title}
                                     />
                                     <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300" />

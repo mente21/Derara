@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Image as ImageIcon, Maximize2, X } from "lucide-react";
+import { optimizeImage } from "../utils/imageOptimizer";
 
 const GalleryPage = () => {
   const [items, setItems] = useState([]);
@@ -98,7 +99,7 @@ const GalleryPage = () => {
                   onClick={() => setSelectedImage(item)}
                 >
                   <img
-                    src={item.image}
+                    src={optimizeImage(item.image, 500)}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -150,7 +151,7 @@ const GalleryPage = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={selectedImage.image}
+                src={optimizeImage(selectedImage.image, 1200)}
                 alt={selectedImage.title}
                 className="max-h-[70vh] w-auto rounded-2xl shadow-2xl border border-white/10 mb-8"
               />
