@@ -4,23 +4,18 @@ import { Menu, X, Moon, Sun } from "lucide-react";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import { useTheme } from "../../context/ThemeContext";
-import { useUser } from "@clerk/clerk-react";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { isDarkMode, toggleTheme } = useTheme();
-  const { user } = useUser();
-  
-  const userRole = user?.publicMetadata?.role || 'customer';
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -30,14 +25,15 @@ const Header = () => {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  const isBlogPage = location.pathname === '/blog';
+  const isBlogPage = location.pathname === "/blog";
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled || isBlogPage
-        ? "bg-white/95 dark:bg-black/80 backdrop-blur-md shadow-lg py-3 border-b border-gray-100 dark:border-white/10"
-        : "bg-transparent py-5 border-transparent"
-        }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        scrolled || isBlogPage
+          ? "bg-white/95 dark:bg-black/80 backdrop-blur-md shadow-lg py-3 border-b border-gray-100 dark:border-white/10"
+          : "bg-transparent py-5 border-transparent"
+      }`}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* LEFT: Logo */}
@@ -52,30 +48,13 @@ const Header = () => {
 
         {/* RIGHT SECTION */}
         <div className="flex items-center gap-2 md:gap-4">
-          {/* CTA BUTTON - Desktop & Mobile */}
-          {user ? (
-            <Link
-              to={userRole === 'admin' ? '/admin-dashboard' : userRole === 'manager' ? '/manager-dashboard' : userRole === 'employee' ? '/employee-dashboard' : '/dashboard'}
-              className="flex items-center px-2 py-1 md:px-5 md:py-2 text-[10px] md:text-sm lg:text-base font-bold uppercase tracking-wider text-white bg-red-600 dark:bg-transparent dark:text-white border-2 border-red-600 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:bg-red-700 dark:hover:bg-red-600 hover:border-red-700 dark:hover:border-red-600 hover:-translate-y-0.5 transform font-outfit"
-            >
-              Dashboard
-            </Link>
-          ) : (
-            <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-              <Link
-                to="/login"
-                className="text-[10px] md:text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white hover:text-red-600 dark:hover:text-red-400 transition-colors duration-300 font-outfit whitespace-nowrap"
-              >
-                Log In
-              </Link>
-              <Link
-                to="/sign-up"
-                className="px-2 py-1 md:px-5 md:py-2 text-[10px] md:text-sm font-bold uppercase tracking-wider text-white bg-red-600 border-2 border-red-600 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:bg-red-700 hover:border-red-700 hover:-translate-y-0.5 transform font-outfit whitespace-nowrap"
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
+          {/* CTA BUTTON — Contact Us */}
+          <Link
+            to="/contact"
+            className="px-2 py-1 md:px-5 md:py-2 text-[10px] md:text-sm font-bold uppercase tracking-wider text-white bg-red-600 border-2 border-red-600 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:bg-red-700 hover:border-red-700 hover:-translate-y-0.5 transform font-outfit whitespace-nowrap"
+          >
+            Contact Us
+          </Link>
 
           {/* Dark Mode Toggle */}
           <button
@@ -95,10 +74,10 @@ const Header = () => {
             onClick={() => setMobileOpen((prev) => !prev)}
             className={`lg:hidden relative z-[60] p-1 md:p-2 rounded-md transition duration-200 flex-shrink-0 ${
               mobileOpen
-                 ? "text-white hover:bg-white/10"
-                 : scrolled || isBlogPage
-                 ? "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
-                 : "text-white hover:bg-white/10"
+                ? "text-white hover:bg-white/10"
+                : scrolled || isBlogPage
+                ? "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                : "text-white hover:bg-white/10"
             }`}
             aria-label="Toggle mobile menu"
           >

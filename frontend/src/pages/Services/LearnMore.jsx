@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import ethiopianFarmerImg from "../../assets/ethiopian-farmer.jpg";
 import precisionProcessingImg from "../../assets/processing-machine.jpg";
 import wholesalePartnershipImg from "../../assets/wholesale-partnership.jpg";
@@ -209,55 +209,15 @@ export default function LearnMore() {
     const navigate = useNavigate();
     const { scrollYProgress } = useScroll();
     const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
-    const [dynamicServices, setDynamicServices] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/services`);
-                const data = await res.json();
-                if (Array.isArray(data)) {
-                    const formattedData = data.map((item, index) => {
-                        // Standardize slug generation for comparison
-                        const dynamicSlug = item.slug || item.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-').replace(/[^\w-]/g, '');
-                        
-                        return {
-                            ...item,
-                            slug: dynamicSlug,
-                            id: index + 1,
-                            tagline: item.features ? item.features.split(',')[0] : "Premium Service",
-                            features: item.features ? item.features.split(',').map(f => f.trim()) : ["Premium Quality"],
-                        };
-                    });
-                    setDynamicServices(formattedData);
-                }
-            } catch (error) {
-                console.error("Failed to fetch services", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchServices();
-    }, []);
-
-    // Help normalize slugs for comparison (remove special chars, spaces to dashes)
+    // Normalize slug for comparison
     const normalizeSlug = (s) => s ? s.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-').replace(/[^\w-]/g, '').replace(/-+/g, '-') : '';
-
-    // Standardize the incoming param before searching
     const targetSlug = normalizeSlug(serviceSlug);
 
-    // Try to find in dynamic services first, then fall back to static data
-    const service = dynamicServices.find(s => normalizeSlug(s.slug) === targetSlug || normalizeSlug(s.title) === targetSlug) || 
-                    servicesData.find(s => normalizeSlug(s.slug) === targetSlug || normalizeSlug(s.title) === targetSlug);
-
-    if (loading && !service) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
-            </div>
-        );
-    }
+    // Look up directly in hardcoded servicesData
+    const service = servicesData.find(
+        (s) => normalizeSlug(s.slug) === targetSlug || normalizeSlug(s.title) === targetSlug
+    );
 
     if (!service) {
         return (
@@ -276,10 +236,7 @@ export default function LearnMore() {
         );
     }
 
-    // Default detailed content if missing from DB
-    const detailedContent = service.detailedContent || (
-        servicesData.find(s => normalizeSlug(s.title) === normalizeSlug(service.title))?.detailedContent || servicesData[0].detailedContent
-    );
+    const detailedContent = service.detailedContent || servicesData[0].detailedContent;
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-white pb-20 font-sans selection:bg-[#D62828] selection:text-white">
@@ -449,9 +406,9 @@ export default function LearnMore() {
                                 <p className="text-gray-400 text-sm">Start your journey with Derara Coffee today.</p>
                             </div>
 
-                            <button className="relative z-10 px-8 py-4 bg-[#FFC436] text-black font-bold rounded-full hover:bg-white transition-all duration-300 shadow-lg transform hover:scale-105">
+                            <Link to="/contact" className="relative z-10 px-8 py-4 bg-[#FFC436] text-black font-bold rounded-full hover:bg-white transition-all duration-300 shadow-lg transform hover:scale-105">
                                 GET STARTED
-                            </button>
+                            </Link>
                         </div>
                     </div>
 

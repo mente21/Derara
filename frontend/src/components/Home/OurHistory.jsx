@@ -1,162 +1,205 @@
-import React, { useState, useEffect } from "react";
-import { Calendar, Award, TrendingUp, Users, Flag } from "lucide-react";
-import { optimizeImage } from "../../utils/imageOptimizer";
+import React, { useRef, useEffect, useState } from "react";
+import { Flag, Award, TrendingUp, Users, Calendar } from "lucide-react";
+import { HISTORY_DATA } from "../../data/constants";
 import localFarmers from "./images/localfarmers.png";
 import excellence from "./images/excellence.jpg";
 import globalVision from "./images/globalvision.png";
 
-// Default fallback data moved outside to serve as initial state
-const defaultHistory = [
-  {
-    title: "Ethiopian Roots",
-    description: "Born in the heart of Addis Ababa, Derara was founded with a singular mission: to honor Ethiopia's coffee heritage. We started by building direct relationships with local farmers to ensure every bean tells the story of its origin.",
-    icon: "Flag",
-    image: "localfarmers.png",
-    order: 0
-  },
-  {
-    title: "Local Excellence",
-    description: "By implementing sustainable export practices and innovative processing methods, we've set new benchmarks for quality in Ethiopia. Our foundation is built on empowering our community and perfecting our craft.",
-    icon: "Award",
-    image: "excellence.jpg",
-    order: 1
-  },
-  {
-    title: "Global Vision",
-    description: "Our journey is just beginning. With plans to establish presence in major global hubs like Dubai and London, we are committed to being the premier bridge between Ethiopian soil and the international stage.",
-    icon: "TrendingUp",
-    image: "globalvision.png",
-    order: 2
-  }
+const getDisplayImage = (img) => {
+  if (!img) return localFarmers;
+  if (img === "localfarmers.png") return localFarmers;
+  if (img === "excellence.jpg") return excellence;
+  if (img === "globalvision.png") return globalVision;
+  return img;
+};
+
+const iconMap = { Flag, Award, TrendingUp, Users, Calendar };
+
+const accentColors = [
+  { text: "#ef4444", glow: "rgba(239,68,68,0.25)", border: "rgba(239,68,68,0.2)", bg: "rgba(239,68,68,0.07)" },
+  { text: "#f59e0b", glow: "rgba(245,158,11,0.25)", border: "rgba(245,158,11,0.2)", bg: "rgba(245,158,11,0.07)" },
+  { text: "#3b82f6", glow: "rgba(59,130,246,0.25)", border: "rgba(59,130,246,0.2)", bg: "rgba(59,130,246,0.07)" },
 ];
 
-const OurHistory = () => {
-  // Initialize with default data immediately for instant loading
-  const [historyData, setHistoryData] = useState(defaultHistory);
-
+const useInView = (threshold = 0.1) => {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/ops/history`);
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          // Sort by order field
-          const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-          setHistoryData(sorted);
-        }
-      } catch (error) {
-        console.error('Failed to fetch history, using default data:', error);
-        // No need to setHistoryData(defaultHistory) as it's already the initial state
-      }
-    };
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { threshold }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold]);
+  return [ref, inView];
+};
 
-    fetchHistory();
-  }, []);
-
-  // Image mapping for local defaults vs uploaded URLs
-  const getDisplayImage = (img) => {
-    if (!img) return localFarmers;
-    if (img === 'localfarmers.png') return localFarmers;
-    if (img === 'excellence.jpg') return excellence;
-    if (img === 'globalvision.png') return globalVision;
-    
-    // Apply optimization for Cloudinary URLs
-    return optimizeImage(img, 800);
-  };
-
-  // Icon mapping - you can extend this based on your needs
-  const getIcon = (iconName) => {
-    const icons = {
-      'Flag': <Flag className="w-6 h-6 text-white" />,
-      'Award': <Award className="w-6 h-6 text-white" />,
-      'TrendingUp': <TrendingUp className="w-6 h-6 text-white" />,
-      'Users': <Users className="w-6 h-6 text-white" />,
-      'Calendar': <Calendar className="w-6 h-6 text-white" />,
-    };
-    return icons[iconName] || <Flag className="w-6 h-6 text-white" />;
-  };
+const OurHistory = () => {
+  const historyData = [...HISTORY_DATA].sort((a, b) => (a.order || 0) - (b.order || 0));
+  const [sectionRef, sectionInView] = useInView(0.08);
 
   return (
-    <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-900 dark:to-black bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 dark:text-white relative overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-red-600/5 dark:bg-red-600/10 rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-600/5 dark:bg-blue-600/10 rounded-full blur-[120px]"></div>
-      </div>
+    <section
+      ref={sectionRef}
+      className="relative py-28 overflow-hidden"
+      style={{ background: "linear-gradient(180deg, #0a0a0a 0%, #080505 60%, #0a0a0a 100%)" }}
+    >
+      {/* Dot grid bg */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
+        }}
+      />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
-        <div className="text-center mb-20 space-y-4">
-          <h2 className="text-red-500 dark:text-red-500 font-outfit font-bold uppercase tracking-widest text-sm animate-fade-in-up">
+        <div
+          className="text-center mb-20"
+          style={{
+            opacity: sectionInView ? 1 : 0,
+            transform: sectionInView ? "translateY(0)" : "translateY(28px)",
+            transition: "all 0.75s ease",
+          }}
+        >
+          <span
+            className="inline-block text-xs font-bold uppercase tracking-[0.35em] mb-4 px-4 py-2 rounded-full"
+            style={{
+              color: "#f59e0b",
+              background: "rgba(245,158,11,0.1)",
+              border: "1px solid rgba(245,158,11,0.22)",
+              fontFamily: "var(--font-outfit)",
+            }}
+          >
             Our Journey
-          </h2>
-          <h1 className="text-4xl md:text-5xl font-playfair font-black tracking-tight text-gray-900 dark:text-white">
-            Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
-              History
+          </span>
+          <h2
+            className="text-5xl md:text-6xl font-black text-white mt-3 leading-tight"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            Rooted in{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #ef4444, #f59e0b)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Ethiopia
             </span>
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xl font-medium font-outfit">
-            Founded in the heart of Ethiopia, we are on a mission to bring
-            our rich heritage to every corner of the globe.
+            ,
+            <br className="hidden md:block" />
+            Built for the World
+          </h2>
+          <p
+            className="text-white/45 text-lg mt-5 max-w-xl mx-auto leading-relaxed"
+            style={{ fontFamily: "var(--font-outfit)" }}
+          >
+            From the birthplace of coffee to international tables — our story is one of heritage, craft, and ambition.
           </p>
         </div>
 
-        {/* Timeline Container */}
-        <div className="relative">
-          {/* Vertical Center Line (Desktop) */}
-          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-transparent via-red-600/50 to-transparent rounded-full"></div>
+        {/* Reversed layout — alternating full-width rows */}
+        <div className="flex flex-col gap-10">
+          {historyData.map((item, index) => {
+            const Icon = iconMap[item.icon] || Flag;
+            const accent = accentColors[index % accentColors.length];
+            const isEven = index % 2 === 0;
+            const delay = index * 140;
 
-          <div className="space-y-12 md:space-y-0">
-            {historyData.map((item, index) => {
-              const isEvent = index % 2 === 0;
-              return (
+            return (
+              <div
+                key={index}
+                className="group rounded-3xl overflow-hidden"
+                style={{
+                  opacity: sectionInView ? 1 : 0,
+                  transform: sectionInView
+                    ? "translateY(0)"
+                    : isEven ? "translateX(-30px)" : "translateX(30px)",
+                  transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+                  background: "rgba(255,255,255,0.025)",
+                  border: `1px solid ${accent.border}`,
+                }}
+              >
+                {/* Two-column: text side + image side — REVERSED per row */}
                 <div
-                  key={index}
-                  className={`flex flex-col md:flex-row items-center justify-between w-full md:mb-16 ${isEvent ? "md:flex-row-reverse" : ""
-                    }`}
+                  className={`flex flex-col md:flex-row ${isEven ? "md:flex-row-reverse" : ""}`}
                 >
-                  {/* Image Side (Uses the previously empty spacer) */}
-                  <div className="hidden md:block w-5/12 group mt-8">
-                    <div className="overflow-hidden rounded-2xl border border-gray-300 dark:border-white/10 shadow-lg relative h-64 md:h-80">
-                      <div className="absolute inset-0 bg-black/10 dark:bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
-                       <img
-                        src={getDisplayImage(item.image)}
-                        alt={item.title}
-                        className="w-full h-[400px] object-cover transform transition-transform duration-700  group-hover:scale-110"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Icon/Dot on the Center Line */}
-                  <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.5)] z-20 border-4 border-white dark:border-gray-900">
-                    {getIcon(item.icon)}
-                  </div>
-
-                  {/* Content Card */}
-                  <div className="w-full md:w-5/12 pl-16 md:pl-0">
-                    <div className="bg-gray-100 dark:bg-white/5 backdrop-blur-md border border-gray-300 dark:border-white/10 p-8 rounded-2xl hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-red-500/30">
-                      {/* Mobile Image (Visible only on mobile) */}
-                      <div className="md:hidden w-full h-56 rounded-xl overflow-hidden mb-6 border border-gray-300 dark:border-white/10 mt-4">
-                        <img
-                          src={getDisplayImage(item.image)}
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
+                  {/* Image side */}
+                  <div className="relative md:w-1/2 h-64 md:h-auto overflow-hidden flex-shrink-0">
+                    <img
+                      src={getDisplayImage(item.image)}
+                      alt={item.title}
+                      className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                      style={{ minHeight: "280px" }}
+                    />
+                    {/* Overlay */}
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: isEven
+                          ? "linear-gradient(to left, rgba(10,8,8,0.85) 0%, rgba(10,8,8,0.1) 100%)"
+                          : "linear-gradient(to right, rgba(10,8,8,0.85) 0%, rgba(10,8,8,0.1) 100%)",
+                      }}
+                    />
+                    {/* Step badge floating on image */}
+                    <div
+                      className="absolute top-5 left-5 flex items-center gap-2"
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{
+                          background: accent.bg,
+                          border: `1px solid ${accent.border}`,
+                          boxShadow: `0 0 18px ${accent.glow}`,
+                        }}
+                      >
+                        <Icon size={18} style={{ color: accent.text }} />
                       </div>
-
-                      <h3 className="text-2xl font-playfair font-bold text-gray-900 dark:text-white mb-3">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base lg:text-lg font-medium font-outfit">
-                        {item.description}
-                      </p>
+                      <span
+                        className="text-xs font-bold px-2 py-1 rounded-md"
+                        style={{
+                          background: "rgba(0,0,0,0.6)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          color: accent.text,
+                          fontFamily: "var(--font-outfit)",
+                          backdropFilter: "blur(8px)",
+                          letterSpacing: "0.1em",
+                        }}
+                      >
+                        0{index + 1}
+                      </span>
                     </div>
+                  </div>
+
+                  {/* Text side */}
+                  <div
+                    className="md:w-1/2 flex flex-col justify-center p-8 md:p-12"
+                    style={{ background: "transparent" }}
+                  >
+                    <h3
+                      className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight group-hover:opacity-90 transition-opacity duration-300"
+                      style={{ fontFamily: "var(--font-playfair)" }}
+                    >
+                      {item.title}
+                    </h3>
+                    <div
+                      className="w-12 h-1 rounded-full mb-5"
+                      style={{ background: `linear-gradient(to right, ${accent.text}, transparent)` }}
+                    />
+                    <p
+                      className="text-white/60 leading-relaxed text-base md:text-lg"
+                      style={{ fontFamily: "var(--font-outfit)" }}
+                    >
+                      {item.description}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
