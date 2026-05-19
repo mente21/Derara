@@ -44,8 +44,7 @@ const Certifications = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-28 overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #080808 0%, #110303 50%, #080808 100%)" }}
+      className="relative py-28 overflow-hidden bg-[#fafafa] dark:bg-black"
     >
       {/* Top edge glow */}
       <div
@@ -80,7 +79,7 @@ const Certifications = () => {
             Partner Voices
           </span>
           <h2
-            className="text-4xl md:text-5xl font-black text-white mt-2"
+            className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mt-2"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
             Trusted by Roasters{" "}
@@ -127,7 +126,7 @@ const Certifications = () => {
               <div>
                 <Stars />
                 <p
-                  className="text-white/90 text-xl md:text-2xl font-medium leading-relaxed mb-10"
+                  className="text-gray-800 dark:text-white/90 text-xl md:text-2xl font-medium leading-relaxed mb-10"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   "{active.feedback}"
@@ -153,13 +152,13 @@ const Certifications = () => {
                   </div>
                   <div>
                     <p
-                      className="text-white font-bold text-base"
+                      className="text-gray-900 dark:text-white font-bold text-base"
                       style={{ fontFamily: "var(--font-outfit)" }}
                     >
                       {active.name}
                     </p>
                     <p
-                      className="text-white/45 text-sm"
+                      className="text-gray-500 dark:text-white/45 text-sm"
                       style={{ fontFamily: "var(--font-outfit)" }}
                     >
                       {active.role} · {active.company}
@@ -201,10 +200,18 @@ const Certifications = () => {
 
           {/* RIGHT — Stacked mini cards (2 cols) */}
           <div className="lg:col-span-2 flex flex-col gap-4">
-            {testimonials.map((t, i) => (
-              <button
-                key={t.id}
-                onClick={() => goTo(i)}
+            <div 
+              className="flex flex-col gap-4 overflow-y-auto pr-2"
+              style={{ 
+                maxHeight: "420px",
+                scrollbarWidth: "thin",
+                scrollbarColor: "rgba(220,38,38,0.5) rgba(255,255,255,0.02)"
+              }}
+            >
+              {testimonials.map((t, i) => (
+                <button
+                  key={t.id}
+                  onClick={() => goTo(i)}
                 className="text-left w-full rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 group"
                 style={{
                   background: i === current
@@ -226,7 +233,7 @@ const Certifications = () => {
                   <p
                     className="font-bold text-sm mb-0.5 truncate"
                     style={{
-                      color: i === current ? "#fff" : "rgba(255,255,255,0.6)",
+                      color: i === current ? (document.documentElement.classList.contains('dark') ? "#fff" : "#111") : (document.documentElement.classList.contains('dark') ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)"),
                       fontFamily: "var(--font-outfit)",
                     }}
                   >
@@ -234,14 +241,14 @@ const Certifications = () => {
                   </p>
                   <p
                     className="text-xs mb-2 truncate"
-                    style={{ color: "rgba(255,255,255,0.35)", fontFamily: "var(--font-outfit)" }}
+                    style={{ color: document.documentElement.classList.contains('dark') ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.4)", fontFamily: "var(--font-outfit)" }}
                   >
                     {t.company}
                   </p>
                   <p
                     className="text-xs leading-relaxed line-clamp-2"
                     style={{
-                      color: i === current ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.3)",
+                      color: i === current ? (document.documentElement.classList.contains('dark') ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.65)") : (document.documentElement.classList.contains('dark') ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"),
                       fontFamily: "var(--font-outfit)",
                     }}
                   >
@@ -250,6 +257,7 @@ const Certifications = () => {
                 </div>
               </button>
             ))}
+            </div>
 
             {/* Progress dots */}
             <div className="flex gap-2 pt-2">

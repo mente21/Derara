@@ -102,12 +102,11 @@ const CoffeeOrigins = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden"
-      style={{ background: "#060606" }}
+      className="relative overflow-hidden bg-[#fafafa] dark:bg-[#060606]"
     >
       {/* ── Full-bleed background image with deep overlay ── */}
       <div
-        className="absolute inset-0 transition-all duration-700"
+        className="absolute inset-0 transition-all duration-700 hidden dark:block"
         style={{
           backgroundImage: `url(${region.image})`,
           backgroundSize: "cover",
@@ -117,7 +116,7 @@ const CoffeeOrigins = () => {
       />
       {/* Dark gradient overlay */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden dark:block"
         style={{
           background:
             "linear-gradient(to right, rgba(6,6,6,0.97) 0%, rgba(6,6,6,0.7) 55%, rgba(6,6,6,0.3) 100%)",
@@ -164,7 +163,7 @@ const CoffeeOrigins = () => {
           {/* LEFT — Region selector + detail */}
           <div>
             <h2
-              className="text-5xl md:text-6xl font-black text-white mb-2 leading-tight"
+              className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-2 leading-tight"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
               Explore Our
@@ -186,11 +185,10 @@ const CoffeeOrigins = () => {
                 <button
                   key={r.id}
                   onClick={() => setActive(i)}
-                  className="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300"
+                  className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${i === active ? 'text-white' : 'text-gray-500 dark:text-white/45 bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/10'}`}
                   style={{
-                    background: i === active ? r.color : "rgba(255,255,255,0.05)",
-                    color: i === active ? "#fff" : "rgba(255,255,255,0.45)",
-                    border: `1px solid ${i === active ? r.color : "rgba(255,255,255,0.1)"}`,
+                    background: i === active ? r.color : undefined,
+                    borderColor: i === active ? r.color : undefined,
                     fontFamily: "var(--font-outfit)",
                     transform: i === active ? "scale(1.05)" : "scale(1)",
                     boxShadow: i === active ? `0 0 16px ${r.glow}` : "none",
@@ -203,7 +201,7 @@ const CoffeeOrigins = () => {
 
             <p
               key={region.id}
-              className="text-white/65 text-lg leading-relaxed mb-8"
+              className="text-gray-700 dark:text-white/65 text-lg leading-relaxed mb-8"
               style={{ fontFamily: "var(--font-outfit)", animation: "fadeIn 0.4s ease" }}
             >
               {region.desc}
@@ -219,11 +217,7 @@ const CoffeeOrigins = () => {
               ].map(({ icon: Icon, label, value }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-3 rounded-xl p-3"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                  }}
+                  className="flex items-center gap-3 rounded-xl p-3 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10"
                 >
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -233,13 +227,13 @@ const CoffeeOrigins = () => {
                   </div>
                   <div>
                     <p
-                      className="text-white/35 text-xs uppercase tracking-wider"
+                      className="text-gray-500 dark:text-white/35 text-xs uppercase tracking-wider"
                       style={{ fontFamily: "var(--font-outfit)" }}
                     >
                       {label}
                     </p>
                     <p
-                      className="text-white text-sm font-semibold"
+                      className="text-gray-900 dark:text-white text-sm font-semibold"
                       style={{ fontFamily: "var(--font-outfit)" }}
                     >
                       {value}
@@ -311,7 +305,7 @@ const CoffeeOrigins = () => {
             {/* Flavor profile tags */}
             <div>
               <p
-                className="text-white/35 text-xs uppercase tracking-widest mb-3"
+                className="text-gray-500 dark:text-white/35 text-xs uppercase tracking-widest mb-3"
                 style={{ fontFamily: "var(--font-outfit)" }}
               >
                 Flavor Profile
@@ -337,14 +331,10 @@ const CoffeeOrigins = () => {
 
             {/* Thin region list */}
             <div
-              className="rounded-2xl p-4"
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)",
-              }}
+              className="rounded-2xl p-4 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10"
             >
               <p
-                className="text-white/30 text-xs uppercase tracking-widest mb-3"
+                className="text-gray-500 dark:text-white/30 text-xs uppercase tracking-widest mb-3"
                 style={{ fontFamily: "var(--font-outfit)" }}
               >
                 All Origins
@@ -360,18 +350,17 @@ const CoffeeOrigins = () => {
                     }}
                   >
                     <span
-                      className="text-sm font-medium"
+                      className={`text-sm font-medium ${i === active ? '' : 'text-gray-600 dark:text-white/40'}`}
                       style={{
-                        color: i === active ? r.color : "rgba(255,255,255,0.4)",
+                        color: i === active ? r.color : undefined,
                         fontFamily: "var(--font-outfit)",
                       }}
                     >
                       {r.name}
                     </span>
                     <span
-                      className="text-xs"
+                      className="text-xs text-gray-400 dark:text-white/20"
                       style={{
-                        color: "rgba(255,255,255,0.2)",
                         fontFamily: "var(--font-outfit)",
                       }}
                     >

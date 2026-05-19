@@ -22,9 +22,7 @@ const slides = [
     title: "Trusted By",
     accent: "the World",
     sub: "We export with integrity, traceability, and a passion for quality that partners rely on.",
-    cta: "Our Certifications",
-    ctaLink: "/about",
-    align: "right",
+    align: "left",
   },
   {
     img: carasol3,
@@ -44,7 +42,7 @@ const slides = [
     sub: "Complex, aromatic, and vibrant — Ethiopian coffee unlike anything else in the world.",
     cta: "View Products",
     ctaLink: "/products",
-    align: "right",
+    align: "left",
   },
 ];
 
@@ -115,8 +113,7 @@ const Carousel = () => {
             }}
           />
           {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }} />
+          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none bg-gradient-to-t from-[#fafafa] dark:from-black to-transparent" />
 
           {/* Text content */}
           <div
@@ -182,51 +179,34 @@ const Carousel = () => {
               </p>
 
               {/* CTA */}
-              <div
-                style={{
-                  opacity: i === current ? 1 : 0,
-                  transform: i === current ? "translateY(0)" : "translateY(20px)",
-                  transition: "all 0.8s ease 0.65s",
-                }}
-              >
-                <a
-                  href={slide.ctaLink}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-bold text-sm tracking-wide uppercase transition-all duration-300 hover:gap-5 hover:shadow-lg"
+              {slide.cta && (
+                <div
                   style={{
-                    background: "linear-gradient(135deg, #dc2626, #b91c1c)",
-                    boxShadow: "0 4px 24px rgba(220,38,38,0.35)",
-                    fontFamily: "var(--font-outfit)",
+                    opacity: i === current ? 1 : 0,
+                    transform: i === current ? "translateY(0)" : "translateY(20px)",
+                    transition: "all 0.8s ease 0.65s",
                   }}
                 >
-                  {slide.cta}
-                  <ChevronRight size={18} />
-                </a>
-              </div>
+                  <a
+                    href={slide.ctaLink}
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-bold text-sm tracking-wide uppercase transition-all duration-300 hover:gap-5 hover:shadow-lg"
+                    style={{
+                      background: "linear-gradient(135deg, #dc2626, #b91c1c)",
+                      boxShadow: "0 4px 24px rgba(220,38,38,0.35)",
+                      fontFamily: "var(--font-outfit)",
+                    }}
+                  >
+                    {slide.cta}
+                    <ChevronRight size={18} />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
       ))}
 
-      {/* Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-white/10 z-20">
-        <div
-          className="h-full transition-none"
-          style={{
-            width: `${progress}%`,
-            background: "linear-gradient(to right, #ef4444, #f59e0b)",
-          }}
-        />
-      </div>
 
-      {/* Slide Counter */}
-      <div
-        className="absolute top-6 right-8 z-20 text-white/70 text-sm font-mono tracking-widest"
-        style={{ fontFamily: "var(--font-outfit)" }}
-      >
-        <span className="text-white text-xl font-bold">{String(current + 1).padStart(2, "0")}</span>
-        <span className="mx-1">/</span>
-        {String(slides.length).padStart(2, "0")}
-      </div>
 
       {/* Nav Arrows */}
       <button

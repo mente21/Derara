@@ -2,8 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import { Flag, Award, TrendingUp, Users, Calendar } from "lucide-react";
 import { HISTORY_DATA } from "../../data/constants";
 import localFarmers from "./images/localfarmers.png";
-import excellence from "./images/excellence.jpg";
 import globalVision from "./images/globalvision.png";
+
+// High-quality image perfectly matching "innovative processing" and "empowering community"
+const excellence = "https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?auto=format&fit=crop&w=800&q=80";
 
 const getDisplayImage = (img) => {
   if (!img) return localFarmers;
@@ -42,14 +44,20 @@ const OurHistory = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-28 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #0a0a0a 0%, #080505 60%, #0a0a0a 100%)" }}
+      className="relative py-28 overflow-hidden bg-[#fafafa] dark:bg-black"
     >
       {/* Dot grid bg */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none hidden dark:block"
         style={{
           backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none block dark:hidden"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px)",
           backgroundSize: "36px 36px",
         }}
       />
@@ -76,7 +84,7 @@ const OurHistory = () => {
             Our Journey
           </span>
           <h2
-            className="text-5xl md:text-6xl font-black text-white mt-3 leading-tight"
+            className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mt-3 leading-tight"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
             Rooted in{" "}
@@ -94,7 +102,7 @@ const OurHistory = () => {
             Built for the World
           </h2>
           <p
-            className="text-white/45 text-lg mt-5 max-w-xl mx-auto leading-relaxed"
+            className="text-gray-600 dark:text-white/45 text-lg mt-5 max-w-xl mx-auto leading-relaxed"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
             From the birthplace of coffee to international tables — our story is one of heritage, craft, and ambition.
@@ -112,38 +120,28 @@ const OurHistory = () => {
             return (
               <div
                 key={index}
-                className="group rounded-3xl overflow-hidden"
+                className="group rounded-3xl overflow-hidden bg-white dark:bg-white/5 shadow-sm dark:shadow-none"
                 style={{
                   opacity: sectionInView ? 1 : 0,
                   transform: sectionInView
                     ? "translateY(0)"
                     : isEven ? "translateX(-30px)" : "translateX(30px)",
                   transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
-                  background: "rgba(255,255,255,0.025)",
                   border: `1px solid ${accent.border}`,
                 }}
               >
                 {/* Two-column: text side + image side — REVERSED per row */}
                 <div
-                  className={`flex flex-col md:flex-row ${isEven ? "md:flex-row-reverse" : ""}`}
+                  className={`flex flex-col md:flex-row ${isEven ? "md:flex-row-reverse" : ""} relative`}
                 >
                   {/* Image side */}
-                  <div className="relative md:w-1/2 h-64 md:h-auto overflow-hidden flex-shrink-0">
+                  <div className="relative w-full md:w-[45%] h-64 md:h-[350px] overflow-hidden flex-shrink-0">
                     <img
                       src={getDisplayImage(item.image)}
                       alt={item.title}
-                      className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
-                      style={{ minHeight: "280px" }}
+                      className="absolute inset-0 w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                     />
-                    {/* Overlay */}
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background: isEven
-                          ? "linear-gradient(to left, rgba(10,8,8,0.85) 0%, rgba(10,8,8,0.1) 100%)"
-                          : "linear-gradient(to right, rgba(10,8,8,0.85) 0%, rgba(10,8,8,0.1) 100%)",
-                      }}
-                    />
+                    {/* Overlay removed per request */}
                     {/* Step badge floating on image */}
                     <div
                       className="absolute top-5 left-5 flex items-center gap-2"
@@ -174,13 +172,29 @@ const OurHistory = () => {
                     </div>
                   </div>
 
+                  {/* Connector (Desktop only) */}
+                  <div className="hidden md:flex w-[10%] items-center justify-center relative">
+                     {/* Horizontal line connecting them */}
+                     <div className="absolute h-px w-full bg-gray-200 dark:bg-white/10" style={{ top: "50%" }} />
+                     {/* Center dot */}
+                     <div 
+                        className="relative w-10 h-10 rounded-full flex items-center justify-center z-10 bg-[#fafafa] dark:bg-[#0a0a0a]"
+                        style={{
+                          border: `1px solid ${accent.border}`,
+                          boxShadow: `0 0 20px ${accent.glow}`,
+                        }}
+                     >
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: accent.text }} />
+                     </div>
+                  </div>
+
                   {/* Text side */}
                   <div
-                    className="md:w-1/2 flex flex-col justify-center p-8 md:p-12"
+                    className="w-full md:w-[45%] flex flex-col justify-center p-8 md:p-12"
                     style={{ background: "transparent" }}
                   >
                     <h3
-                      className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight group-hover:opacity-90 transition-opacity duration-300"
+                      className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-4 leading-tight group-hover:opacity-90 transition-opacity duration-300"
                       style={{ fontFamily: "var(--font-playfair)" }}
                     >
                       {item.title}
@@ -190,7 +204,7 @@ const OurHistory = () => {
                       style={{ background: `linear-gradient(to right, ${accent.text}, transparent)` }}
                     />
                     <p
-                      className="text-white/60 leading-relaxed text-base md:text-lg"
+                      className="text-gray-600 dark:text-white/60 leading-relaxed text-base md:text-lg"
                       style={{ fontFamily: "var(--font-outfit)" }}
                     >
                       {item.description}

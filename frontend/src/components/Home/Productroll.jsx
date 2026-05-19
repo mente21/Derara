@@ -114,12 +114,12 @@ const HeroProductCard = ({ product, inView, delay }) => {
 };
 
 // Small product card
-const SmallProductCard = ({ product, inView, delay }) => {
+const SmallProductCard = ({ product, inView, delay, onClick }) => {
   const tag = tagColors[product.tag];
   return (
-    <Link
-      to={`/products`}
-      className="group relative block rounded-2xl overflow-hidden cursor-pointer"
+    <button
+      onClick={onClick}
+      className="group relative block w-full h-full text-left rounded-2xl overflow-hidden cursor-pointer"
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(30px)",
@@ -175,24 +175,25 @@ const SmallProductCard = ({ product, inView, delay }) => {
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none rounded-2xl"
         style={{ border: "1px solid rgba(245,158,11,0.3)" }}
       />
-    </Link>
+    </button>
   );
 };
 
 const Productroll = () => {
   const featuredProducts = PRODUCTS.filter((p) => p.isFeatured && p.isVisible !== false);
   const [sectionRef, sectionInView] = useInView(0.08);
+  const [heroIndex, setHeroIndex] = useState(0);
 
   if (featuredProducts.length === 0) return null;
 
-  // Bento layout: first card is large (col-span-2 row-span-2), rest are small
-  const [heroProduct, ...restProducts] = featuredProducts;
+  // Bento layout: current hero is large, rest are small
+  const heroProduct = featuredProducts[heroIndex];
+  const restProducts = featuredProducts.filter((_, i) => i !== heroIndex);
 
   return (
     <section
       ref={sectionRef}
-      className="relative py-28 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #0d0202 0%, #080808 100%)" }}
+      className="relative py-28 overflow-hidden bg-[#fafafa] dark:bg-black"
     >
       {/* Ambient glow */}
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] pointer-events-none"
@@ -225,7 +226,7 @@ const Productroll = () => {
               Our Products
             </span>
             <h2
-              className="text-4xl md:text-5xl font-black text-white leading-tight"
+              className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
               Featured{" "}
@@ -240,7 +241,7 @@ const Productroll = () => {
               </span>
             </h2>
             <p
-              className="text-white/45 mt-3 max-w-md"
+              className="text-gray-600 dark:text-white/45 mt-3 max-w-md"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
               Specialty-grade Ethiopian Arabica, sourced from the world's most celebrated growing regions.
@@ -270,14 +271,18 @@ const Productroll = () => {
             delay={100}
           />
           {/* Smaller cards */}
-          {restProducts.slice(0, 4).map((product, i) => (
-            <SmallProductCard
-              key={product.id}
-              product={product}
-              inView={sectionInView}
-              delay={200 + i * 100}
-            />
-          ))}
+          {restProducts.slice(0, 4).map((product, i) => {
+            const originalIndex = featuredProducts.findIndex(p => p.id === product.id);
+            return (
+              <SmallProductCard
+                key={product.id}
+                product={product}
+                inView={sectionInView}
+                delay={200 + i * 100}
+                onClick={() => setHeroIndex(originalIndex)}
+              />
+            );
+          })}
         </div>
 
         {/* Mobile CTA */}

@@ -1,20 +1,22 @@
 import React from "react";
 import Carousel from "./carousel";
-import StatsBar from "./StatsBar";
+
 import OurHistory from "./OurHistory";
 import CoffeeOrigins from "./CoffeeOrigins";
 import Certifications from "./Certifications";
 import Productroll from "./Productroll";
+import ContactUsPage from "../../pages/ContactUsPage";
 
 const Main = () => {
   return (
     <>
       <Carousel />
-      <StatsBar />
+
       <OurHistory />
       <CoffeeOrigins />
-      <Certifications />
       <Productroll />
+      <Certifications />
+      <ContactUsPage />
     </>
   );
 };
